@@ -19,7 +19,7 @@ export async function GET(req: NextRequest, { params }: TProps) {
   return NextResponse.json(user);
 }
 
-// PUT by id
+// PUT by Id
 export async function PUT(req: NextRequest, { params }: TProps) {
   const body = await req.json();
   const validation = schema.safeParse(body);
@@ -28,12 +28,12 @@ export async function PUT(req: NextRequest, { params }: TProps) {
     return NextResponse.json(validation.error.errors, { status: 400 });
   }
 
-  const user = prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: parseInt(params.id) },
   });
 
   if (!user) {
-    return NextResponse.json({ error: "User not found" }, { status: 404 });
+    return NextResponse.json({ error: "User not found." }, { status: 404 });
   }
 
   const updatedUser = await prisma.user.update({
@@ -63,7 +63,7 @@ export async function DELETE(req: NextRequest, { params }: TProps) {
     return NextResponse.json({ error: "User not found." }, { status: 404 });
   }
 
-  const deletedUser = await prisma.user.delete({
+  await prisma.user.delete({
     where: { id: user.id },
   });
 
