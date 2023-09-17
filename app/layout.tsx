@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 // NextUI
 import { Providers } from "./providers";
 import { Toaster } from "react-hot-toast";
+import Navbar from "./components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
           }}
         />
         <Providers>
+          <Navbar />
           <main>{children}</main>
         </Providers>
       </body>

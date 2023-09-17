@@ -3,13 +3,12 @@
 import { Button } from "@nextui-org/button";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function SignInPage() {
   const router = useRouter();
   const { data: session } = useSession();
-  // console.log({ session });
 
   const [data, setData] = useState({
     email: "",
@@ -33,7 +32,7 @@ export default function SignInPage() {
       toast.error("Incorrect email/password");
     } else {
       toast.success("Logged in");
-      router.push("/users");
+      router.push("/admin");
     }
   };
 

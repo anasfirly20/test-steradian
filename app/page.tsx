@@ -6,12 +6,21 @@ export default async function Home() {
   const session = await getServerSession(authOptions);
 
   return (
-    <article className="min-h-screen p-24 flex flex-col gap-10">
-      <Link href="/api/auth/signin">GO TO SIGN IN</Link>
-      <Link href="/admin" className="hover:opacity-80 w-fit">
-        Go To Dashboard
-      </Link>
-      {session?.user && <h1>asda</h1>}
+    <article className="min-h-screen flex justify-center items-center">
+      {session?.user ? (
+        <section className="flex flex-col justify-center items-center">
+          <h1 className="text-7xl">Welcome! {session?.user?.username}</h1>
+          <Link href="/admin" className="hover:opacity-80 mt-10">
+            Go To Dashboard
+          </Link>
+        </section>
+      ) : (
+        <section className="flex flex-col justify-center items-center">
+          <Link href="/api/auth/signin" className="hover:opacity-80">
+            Please sign in to access
+          </Link>
+        </section>
+      )}
     </article>
   );
 }
