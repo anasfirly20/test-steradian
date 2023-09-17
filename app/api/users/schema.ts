@@ -5,7 +5,6 @@ const phoneRegex = new RegExp(
 );
 
 const schema = z.object({
-  name: z.string().min(3),
   email: z.string().email(),
   phoneNumber: z.string().regex(phoneRegex, "Invalid Number!"),
   city: z.string(),
