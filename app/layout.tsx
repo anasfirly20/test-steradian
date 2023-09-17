@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 
 // NextUI
 import { Providers } from "./providers";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Toaster
+          toastOptions={{
+            duration: 2000,
+          }}
+        />
         <Providers>
           <main>{children}</main>
         </Providers>
