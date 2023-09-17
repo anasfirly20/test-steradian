@@ -13,34 +13,49 @@ export async function GET(req: NextRequest) {
 // ADD ORDER
 export async function POST(req: NextRequest) {
   const body = await req.json();
+  console.log("BODY >>", body);
   const validation = schema.safeParse(body);
 
   if (!validation.success) {
     return NextResponse.json(validation.error.errors, { status: 400 });
   }
+  console.log("ERROR 1");
 
-  const user = await createUser();
-  const admin = await createAdmin();
+  // Assuming you have some way to identify the user and admin, such as email or ID
+  const userEmail = body.userEmail; // Replace with your logic to get the user's email
+  const adminEmail = body.adminEmail; // Replace with your logic to get the admin's email
+  console.log("ERROR 2");
+
+  // Find the user and admin by their emails (you can use ID or any other unique identifier)
+  const user = await prisma.user.findUnique({
+    where: {
+      email: userEmail,
+    },
+  });
+  console.log("ERROR 3");
+
+  const admin = await prisma.admin.findUnique({
+    where: {
+      email: adminEmail,
+    },
+  });
+  console.log("ERROR 4");
+
+  if (!user || !admin) {
+    return NextResponse.json(
+      { error: "User or admin not found" },
+      { status: 404 }
+    );
+  }
+  console.log("ERROR 5");
 
   const orderNew = await prisma.order.create({
     data: {
       pickUpLoc: body.pickUpLoc,
       dropOffLoc: body.dropOffLoc,
       pickUpTime: body.pickUpTime,
-      user: {
-        connect: {
-          id: user.id,
-        },
-      },
-      admin: {
-        connect: {
-          id: admin.id,
-        },
-      },
-    },
-    include: {
-      user: true,
-      admin: true,
+      userId: user.id, // Connect the order to the user using the user's ID
+      adminId: admin.id, // Connect the order to the admin using the admin's ID
     },
   });
 
