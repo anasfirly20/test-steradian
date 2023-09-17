@@ -15,7 +15,11 @@ export default function UsersPage() {
     <div className="min-h-screen">
       <h1>LOOOK</h1>
       {data?.map((user) => {
-        return <h1 key={user?.id}>{user?.email}</h1>;
+        return (
+          <h1 key={user?.id}>
+            {user?.email} - {user?.id}
+          </h1>
+        );
       })}
       <h1>HELLO</h1>
     </div>
