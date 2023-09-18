@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 export default function OrdersPage() {
   const { data: session } = useSession();
   const { data: dataOrder } = useQuery(["ordersData"], getAllOrders);
-
   const [ordersData, setOrdersData] = useState([]);
 
   useEffect(() => {
@@ -30,10 +29,11 @@ export default function OrdersPage() {
 
   return (
     <section className="min-h-screen">
-      <h1 className="text-xl">Your orders</h1>
+      <h1 className="text-xl">Hello! {session?.user?.username}</h1>
       <p className="mb-5">
         {session?.user?.email} - {session?.user?.id}
       </p>
+      <h1 className="text-center mb-5">Order details</h1>
       <OrderTable data={ordersData} />
     </section>
   );
