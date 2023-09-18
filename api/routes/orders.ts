@@ -5,7 +5,7 @@ export const getAllOrders = async () => {
   return res.data;
 };
 
-export const PosstOrder = async (body: TPOSTOrder) => {
+export const postOrder = async (body: TPOSTOrder) => {
   const res = await api.post("/orders", body);
   return res.data;
 };

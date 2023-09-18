@@ -13,29 +13,37 @@ import { Input } from "@nextui-org/input";
 
 // Miscellanepis
 import { ChangeEvent, useState } from "react";
-import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 // Components
 import InputLabel from "@/app/components/InputLabel";
+
+// Api
+import { postOrder } from "@/api/routes/orders";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type TProps = {
   isOpen: boolean;
   onOpen: () => void;
   onOpenChange: () => void;
+  userId: number;
 };
 
-const initialValues = {
-  pickUpLoc: "",
-  dropOffLoc: "",
-  pickUpTime: "",
-  pickUpDate: "",
-  dropOffDate: "",
-};
-
-export default function OrderModal({ isOpen, onOpen, onOpenChange }: TProps) {
-  const { data: session } = useSession();
-
-  const [data, setData] = useState(initialValues);
+export default function OrderModal({
+  isOpen,
+  onOpen,
+  onOpenChange,
+  userId,
+}: TProps) {
+  const queryClient = useQueryClient();
+  const [data, setData] = useState({
+    pickUpLoc: "",
+    dropOffLoc: "",
+    pickUpTime: "",
+    pickUpDate: "",
+    dropOffDate: "",
+    userId: userId,
+  });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -43,10 +51,32 @@ export default function OrderModal({ isOpen, onOpen, onOpenChange }: TProps) {
   };
 
   const handleAdd = () => {
+    if (!userId) {
+      toast.error("You are not authenticated to do this operation");
+    }
+    newOrderMutation.mutate(data);
     console.log("DATA>>", data);
-
-    console.log("SESSION >>", session?.user.id);
+    console.log("userId >>", userId);
   };
+
+  const newOrderMutation = useMutation(postOrder, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["ordersData"]);
+      toast.success("New user has been added");
+      setData({
+        ...data,
+        pickUpLoc: "",
+        dropOffLoc: "",
+        pickUpTime: "",
+        pickUpDate: "",
+        dropOffDate: "",
+      });
+    },
+    onError: (err) => {
+      toast.error("An error occurred");
+      console.log(err);
+    },
+  });
 
   return (
     <>
@@ -103,7 +133,7 @@ export default function OrderModal({ isOpen, onOpen, onOpenChange }: TProps) {
                   variant="solid"
                   onPress={() => {
                     handleAdd();
-                    // onClose();
+                    onClose();
                   }}
                 >
                   Add order

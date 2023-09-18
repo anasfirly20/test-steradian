@@ -15,11 +15,12 @@ import OrderTable from "./components/OrderTable";
 
 export default function OrdersPage() {
   const { data: session } = useSession();
+  const userId = session?.user?.id;
   const { data: dataOrder } = useQuery(["ordersData"], getAllOrders);
   const [ordersData, setOrdersData] = useState([]);
 
   useEffect(() => {
-    if (dataOrder && session?.user?.id) {
+    if (dataOrder && userId) {
       const filteredOrders = dataOrder.filter(
         (order: { user: { id: string }; admin: { id: string } }) => {
           if (order.user?.id) {
@@ -31,7 +32,7 @@ export default function OrdersPage() {
       );
       setOrdersData(filteredOrders);
     }
-  }, [dataOrder, session]);
+  }, [dataOrder, session, userId]);
 
   // Modal Handler
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -40,9 +41,16 @@ export default function OrdersPage() {
     <section className="min-h-screen">
       <h1 className="text-xl">Hello! {session?.user?.username}</h1>
       <p className="mb-5">
-        {session?.user?.email} - {session?.user?.id}
+        {session?.user?.email} - {userId}
       </p>
-      <OrderModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
+      {session && userId && (
+        <OrderModal
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onOpenChange={onOpenChange}
+          userId={+userId}
+        />
+      )}
       <h1 className="text-center my-5">Order details</h1>
       <OrderTable data={ordersData} />
     </section>
