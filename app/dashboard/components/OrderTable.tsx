@@ -1,4 +1,5 @@
-import { deleteOrder } from "@/api/routes/orders";
+import { deleteOrder, getOrderById } from "@/api/routes/orders";
+import ModalEdit from "@/app/orders/components/ModalEdit";
 import OrderModal from "@/app/orders/components/OrderModal";
 import { formatDate } from "@/helpers/utils/utils";
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -13,6 +14,7 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 type TProps = {
@@ -22,8 +24,12 @@ type TProps = {
 };
 
 export default function OrderTable({ data, isLoading, userId }: TProps) {
-  // Modal handler
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  // Modal handler add new order
+  const {
+    isOpen: isOpenAdd,
+    onOpen: onOpenAdd,
+    onOpenChange: onOpenChangeAdd,
+  } = useDisclosure();
 
   const queryClient = useQueryClient();
 
@@ -38,17 +44,41 @@ export default function OrderTable({ data, isLoading, userId }: TProps) {
     },
   });
 
+  // Modal handler "edit" order
+  const {
+    isOpen: isOpenEdit,
+    onOpen: onOpenEdit,
+    onOpenChange: onOpenChangeEdit,
+  } = useDisclosure();
+
+  // get single order
+  const [order, setOrder] = useState({});
+
+  const getSingleOrder = async (userId: number) => {
+    try {
+      const res = await getOrderById(userId);
+      setOrder(res);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
   return (
     <article>
       <h1 className="text-center my-5">Order details</h1>
       {userId && (
         <OrderModal
-          isOpen={isOpen}
-          onOpen={onOpen}
-          onOpenChange={onOpenChange}
+          isOpen={isOpenAdd}
+          onOpen={onOpenAdd}
+          onOpenChange={onOpenChangeAdd}
           userId={userId}
         />
       )}
+      <ModalEdit
+        isOpen={isOpenEdit}
+        onOpenChange={onOpenChangeEdit}
+        order={order as TGETOrderById}
+      />
       <Table aria-label="Example static collection table" className="mt-3">
         <TableHeader>
           <TableColumn>Order Id</TableColumn>
@@ -79,7 +109,13 @@ export default function OrderTable({ data, isLoading, userId }: TProps) {
                   {order?.pickUpTime}{" "}
                   <section className="relative flex items-center gap-2">
                     <Tooltip content="Edit order">
-                      <button className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                      <button
+                        className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                        onClick={() => {
+                          getSingleOrder(order?.id);
+                          onOpenEdit();
+                        }}
+                      >
                         <Icon icon="bx:edit" fontSize={25} />
                       </button>
                     </Tooltip>
