@@ -5,7 +5,6 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 // Miscellaneous
 import prisma from "@/prisma/client";
-import { compare } from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -39,10 +38,7 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const passwordMatch = await compare(
-          credentials.password,
-          existingUser.password
-        );
+        const passwordMatch = credentials.password === existingUser.password;
         if (!passwordMatch) {
           return null;
         }
