@@ -1,3 +1,6 @@
+import { ChangeEvent, useEffect, useState } from "react";
+
+// Next ui
 import {
   Modal,
   ModalContent,
@@ -7,13 +10,14 @@ import {
 } from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
-import { ChangeEvent, useEffect, useState } from "react";
+
+// Components
 import InputLabel from "@/app/components/InputLabel";
+import toast from "react-hot-toast";
 
 // Api
 import { putOrderById } from "@/api/routes/orders";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 
 type TProps = {
   isOpen: boolean;
@@ -22,6 +26,7 @@ type TProps = {
 };
 
 const initialValues = {
+  id: 0,
   pickUpLoc: "",
   dropOffLoc: "",
   pickUpDate: "",
@@ -46,13 +51,17 @@ export default function ModalEdit({ isOpen, onOpenChange, order }: TProps) {
 
   const editOrderMutation = useMutation(
     (body: TPUTOrder) => {
-      const id = data?.id; // Assuming data contains the ID
+      const id = data?.id;
       return putOrderById(id, body);
     },
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["ordersData"]);
         toast.success("Order has been updated");
+      },
+      onError: (err) => {
+        toast.error("An error occurred");
+        console.log(err);
       },
     }
   );

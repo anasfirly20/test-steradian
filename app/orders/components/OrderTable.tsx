@@ -90,7 +90,6 @@ export default function OrderTable({ data }: TProps) {
                   <button
                     onClick={() => {
                       deleteOrderMutation.mutate(order?.id);
-                      console.log("order id>>", order?.id);
                     }}
                   >
                     <Icon
