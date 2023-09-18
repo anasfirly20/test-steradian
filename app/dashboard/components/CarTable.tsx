@@ -7,6 +7,7 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/react";
+import ModalAddCar from "./ModalAddCar";
 
 type TProps = {
   data: TGETCars[];
@@ -17,6 +18,7 @@ export default function CarTable({ data, isLoading }: TProps) {
   return (
     <article>
       <h1 className="text-center my-5">Car details</h1>
+      <ModalAddCar />
       <Table aria-label="Example static collection table">
         <TableHeader>
           <TableColumn>Car Id</TableColumn>
