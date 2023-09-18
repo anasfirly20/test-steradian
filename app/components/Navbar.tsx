@@ -16,8 +16,10 @@ export default function Navbar() {
   const router = useRouter();
 
   const handleSignOut = () => {
-    signOut();
-    router.push("/sign-in");
+    signOut({
+      redirect: true,
+      callbackUrl: `${window.location.origin}/sign-in`,
+    });
   };
 
   return (

@@ -13,7 +13,6 @@ export default function UsersPage() {
 
   return (
     <div className="min-h-screen">
-      <h1>LOOOK</h1>
       {data?.map((user) => {
         return (
           <h1 key={user?.id}>
@@ -21,7 +20,6 @@ export default function UsersPage() {
           </h1>
         );
       })}
-      <h1>HELLO</h1>
     </div>
   );
 }
