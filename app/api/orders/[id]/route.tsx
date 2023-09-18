@@ -6,7 +6,7 @@ type TProps = {
   params: { id: string };
 };
 
-//   GET order by id
+// GET order by id
 export async function GET(req: NextRequest, { params }: TProps) {
   const order = await prisma.order.findUnique({
     where: { id: parseInt(params.id) },
@@ -17,4 +17,17 @@ export async function GET(req: NextRequest, { params }: TProps) {
   }
 
   return NextResponse.json(order);
+}
+
+// DELETE order by id
+export async function DELETE(req: NextRequest, { params }: TProps) {
+  const order = await prisma.order.findUnique({
+    where: { id: parseInt(params.id) },
+  });
+
+  await prisma.order.delete({
+    where: { id: order?.id },
+  });
+
+  return NextResponse.json({ message: "Order successfully deleted" });
 }
