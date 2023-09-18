@@ -1,6 +1,9 @@
+// Next auth
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+
+// Miscellaneous
 import prisma from "@/prisma/client";
 import { compare } from "bcrypt";
 
@@ -11,7 +14,7 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   pages: {
-    signIn: "/signin",
+    signIn: "/sign-in",
   },
   providers: [
     CredentialsProvider({

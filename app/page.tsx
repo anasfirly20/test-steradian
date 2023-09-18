@@ -16,7 +16,7 @@ export default async function Home() {
         </section>
       ) : (
         <section className="flex flex-col justify-center items-center">
-          <Link href="/api/auth/signin" className="hover:opacity-80">
+          <Link href="/sign-in" className="hover:opacity-80">
             Please sign in to access
           </Link>
         </section>

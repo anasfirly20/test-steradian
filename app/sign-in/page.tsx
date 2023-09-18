@@ -1,14 +1,13 @@
 "use client";
 
 import { Button } from "@nextui-org/button";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function SignInPage() {
   const router = useRouter();
-  const { data: session } = useSession();
 
   const [data, setData] = useState({
     email: "",
@@ -32,7 +31,7 @@ export default function SignInPage() {
       toast.error("Incorrect email/password");
     } else {
       toast.success("Logged in");
-      router.push("/admin");
+      router.push("/");
     }
   };
 
@@ -51,7 +50,7 @@ export default function SignInPage() {
         <input
           className="p-3 outline-none text-black rounded-lg"
           placeholder="Password"
-          type="password"
+          type="text"
           name="password"
           value={data?.password}
           onChange={(e) => handleChange(e)}
@@ -64,9 +63,6 @@ export default function SignInPage() {
           Login
         </Button>
       </section>
-      {session?.user && (
-        <h1 className="text-white text-6xl">USER IS LOGGED IN</h1>
-      )}
     </article>
   );
 }
