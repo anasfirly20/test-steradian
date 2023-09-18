@@ -1,5 +1,7 @@
+import { deleteOrder } from "@/api/routes/orders";
 import OrderModal from "@/app/orders/components/OrderModal";
 import { formatDate } from "@/helpers/utils/utils";
+import { Icon } from "@iconify/react/dist/iconify.js";
 import {
   Table,
   TableHeader,
@@ -8,8 +10,10 @@ import {
   TableRow,
   TableCell,
   useDisclosure,
+  Tooltip,
 } from "@nextui-org/react";
-import { useSession } from "next-auth/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 type TProps = {
   data: TGETOrders[];
@@ -18,7 +22,21 @@ type TProps = {
 };
 
 export default function OrderTable({ data, isLoading, userId }: TProps) {
+  // Modal handler
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const queryClient = useQueryClient();
+
+  const deleteOrderMutation = useMutation(deleteOrder, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["ordersData"]);
+      toast.success("Order deleted");
+    },
+    onError: (err) => {
+      toast.error("An error occurred");
+      console.log(err);
+    },
+  });
 
   return (
     <article>
@@ -57,7 +75,29 @@ export default function OrderTable({ data, isLoading, userId }: TProps) {
                 <TableCell>{order?.dropOffLoc}</TableCell>
                 <TableCell>{formatDate(order?.pickUpDate)}</TableCell>
                 <TableCell>{formatDate(order?.dropOffDate)}</TableCell>
-                <TableCell>{order?.pickUpTime}</TableCell>
+                <TableCell className="flex justify-between items-center">
+                  {order?.pickUpTime}{" "}
+                  <section className="relative flex items-center gap-2">
+                    <Tooltip content="Edit order">
+                      <button className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                        <Icon icon="bx:edit" fontSize={25} />
+                      </button>
+                    </Tooltip>
+                    <Tooltip color="danger" content="Delete order">
+                      <button
+                        className="text-lg text-danger cursor-pointer active:opacity-50"
+                        onClick={() => {
+                          deleteOrderMutation.mutate(order?.id);
+                        }}
+                      >
+                        <Icon
+                          icon="material-symbols:delete-outline"
+                          fontSize={25}
+                        />
+                      </button>
+                    </Tooltip>
+                  </section>{" "}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

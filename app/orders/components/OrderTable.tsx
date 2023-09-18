@@ -20,7 +20,7 @@ import { useDisclosure } from "@nextui-org/use-disclosure";
 
 // Api
 import { deleteOrder, getOrderById } from "@/api/routes/orders";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ModalEdit from "./ModalEdit";
 import { useState } from "react";
 
