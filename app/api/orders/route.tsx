@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
       dropOffLoc: body.dropOffLoc,
       pickUpTime: body.pickUpTime,
       pickUpDate: body.pickUpDate,
+      dropOffDate: body.dropOffDate,
       userId: body.userId,
       adminId: body.adminId,
     },

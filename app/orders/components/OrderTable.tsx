@@ -23,18 +23,20 @@ export default function OrderTable({ data }: TProps) {
       <Table aria-label="Example static collection table">
         <TableHeader>
           <TableColumn>Order No.</TableColumn>
-          <TableColumn>Drop Off Location</TableColumn>
           <TableColumn>Pickup Location</TableColumn>
+          <TableColumn>Drop Off Location</TableColumn>
           <TableColumn>Pickup Date</TableColumn>
+          <TableColumn>Drop Off Date</TableColumn>
           <TableColumn>Pickup Time</TableColumn>
         </TableHeader>
         <TableBody>
           {data?.map((e) => (
             <TableRow key={e.id}>
               <TableCell>{e.id}</TableCell>
-              <TableCell>{e.dropOffLoc}</TableCell>
               <TableCell>{e.pickUpLoc}</TableCell>
+              <TableCell>{e.dropOffLoc}</TableCell>
               <TableCell>{formatDate(e.pickUpDate)}</TableCell>
+              <TableCell>{formatDate(e.dropOffDate)}</TableCell>
               <TableCell>{e.pickUpTime}</TableCell>
             </TableRow>
           ))}
