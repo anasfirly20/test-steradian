@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Order" ALTER COLUMN "pickUpDate" SET DATA TYPE TEXT;

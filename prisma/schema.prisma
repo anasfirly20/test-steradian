@@ -27,7 +27,7 @@ model Order {
   id          Int      @id @default(autoincrement())
   pickUpLoc   String
   dropOffLoc  String
-  pickUpDate  DateTime 
+  pickUpDate  String
   dropOffDate DateTime @default(now())
   pickUpTime  String
   user        User?    @relation(fields: [userId], references: [id])
@@ -35,8 +35,6 @@ model Order {
   car         Car[]
   admin       Admin?   @relation(fields: [adminId], references: [id])
   adminId     Int?
-
-  
 }
 
 model Car {
