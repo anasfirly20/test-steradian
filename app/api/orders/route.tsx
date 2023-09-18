@@ -5,17 +5,6 @@ import prisma from "@/prisma/client";
 // GET ALL ORDERS
 export async function GET(req: NextRequest) {
   const orders = await prisma.order.findMany({
-    // select: {
-    //   id: true,
-    //   pickUpLoc: true,
-    //   dropOffLoc: true,
-    //   pickUpDate: true,
-    //   dropOffDate: true,
-    //   pickUpTime: true,
-    //   car: true,
-    //   user: true,
-    //   admin: true,
-    // },
     include: {
       car: true,
       user: true,
