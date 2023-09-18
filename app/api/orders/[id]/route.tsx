@@ -31,3 +31,31 @@ export async function DELETE(req: NextRequest, { params }: TProps) {
 
   return NextResponse.json({ message: "Order successfully deleted" });
 }
+
+// PUT by id
+export async function PUT(req: NextRequest, { params }: TProps) {
+  const body = await req.json();
+  const validation = schema.safeParse(body);
+
+  if (!validation.success) {
+    return NextResponse.json(validation.error.errors, { status: 400 });
+  }
+
+  console.log("ERROR 2");
+  const order = await prisma.order.findUnique({
+    where: { id: parseInt(params.id) },
+  });
+
+  const updatedOrder = await prisma.order.update({
+    where: { id: order?.id },
+    data: {
+      pickUpLoc: body.pickUpLoc,
+      dropOffLoc: body.dropOffLoc,
+      pickUpTime: body.pickUpTime,
+      pickUpDate: body.pickUpDate,
+      dropOffDate: body.dropOffDate,
+    },
+  });
+
+  return NextResponse.json(updatedOrder);
+}
