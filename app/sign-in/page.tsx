@@ -2,6 +2,7 @@
 
 import { Button } from "@nextui-org/button";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
@@ -62,6 +63,17 @@ export default function SignInPage() {
         >
           Login
         </Button>
+      </section>
+      <section className="flex justify-center items-center gap-2">
+        <p className="text-center mt-3 text-sm">
+          Don&apos;t have an account yet?
+        </p>
+        <Link
+          href="/sign-up"
+          className="text-sm self-end hover:opacity-80 text-[#0070ef]"
+        >
+          Sign Up
+        </Link>
       </section>
     </article>
   );
