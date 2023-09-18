@@ -13,6 +13,9 @@ import {
   TableCell,
 } from "@nextui-org/table";
 
+// Miscellaneous
+import { Icon } from "@iconify/react";
+
 type TProps = {
   data: TGETOrders[];
 };
@@ -37,7 +40,20 @@ export default function OrderTable({ data }: TProps) {
               <TableCell>{e.dropOffLoc}</TableCell>
               <TableCell>{formatDate(e.pickUpDate)}</TableCell>
               <TableCell>{formatDate(e.dropOffDate)}</TableCell>
-              <TableCell>{e.pickUpTime}</TableCell>
+              <TableCell className="flex justify-between group">
+                {e.pickUpTime}
+                <section className="flex gap-1 group-hover:opacity-100 opacity-0 transition-opacity ease-out">
+                  <button>
+                    <Icon icon="bx:edit" fontSize={25} />
+                  </button>
+                  <button>
+                    <Icon
+                      icon="material-symbols:delete-outline"
+                      fontSize={25}
+                    />
+                  </button>
+                </section>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -41,7 +41,6 @@ export async function PUT(req: NextRequest, { params }: TProps) {
     return NextResponse.json(validation.error.errors, { status: 400 });
   }
 
-  console.log("ERROR 2");
   const order = await prisma.order.findUnique({
     where: { id: parseInt(params.id) },
   });
