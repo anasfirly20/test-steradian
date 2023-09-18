@@ -44,7 +44,10 @@ export default function SignInPage() {
 
   return (
     <article className="min-h-screen p-24">
-      <h1 className="font-bold text-center text-3xl">Admin login</h1>
+      <h1 className="font-bold text-center text-3xl">Admin Panel</h1>
+      <p className="text-center text-sm mt-3">
+        Please login to see the dashboard
+      </p>
       <form
         onSubmit={handleSubmit}
         className="grid mt-10 w-[30%] mx-auto gap-y-5"

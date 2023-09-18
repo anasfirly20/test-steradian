@@ -1,3 +1,4 @@
+import OrderModal from "@/app/orders/components/OrderModal";
 import { formatDate } from "@/helpers/utils/utils";
 import {
   Table,
@@ -6,18 +7,31 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  useDisclosure,
 } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
 
 type TProps = {
   data: TGETOrders[];
   isLoading: boolean;
+  userId: number;
 };
 
-export default function OrderTable({ data, isLoading }: TProps) {
+export default function OrderTable({ data, isLoading, userId }: TProps) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   return (
     <article>
       <h1 className="text-center my-5">Order details</h1>
-      <Table aria-label="Example static collection table">
+      {userId && (
+        <OrderModal
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onOpenChange={onOpenChange}
+          userId={userId}
+        />
+      )}
+      <Table aria-label="Example static collection table" className="mt-3">
         <TableHeader>
           <TableColumn>Order Id</TableColumn>
           <TableColumn>Owner</TableColumn>

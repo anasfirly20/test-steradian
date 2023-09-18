@@ -65,6 +65,9 @@ export default function OrderModal({
   });
 
   const handleAdd = () => {
+    console.log("DATA >>", data);
+    console.log("userId >>", userId);
+
     if (!userId) {
       toast.error("You are not authenticated to do this operation");
     }
@@ -126,6 +129,8 @@ export default function OrderModal({
                   variant="solid"
                   onPress={() => {
                     if (!formValidator(data)) {
+                      console.log("DATA >>", data);
+
                       toast.error("All fields are mandatory");
                       return;
                     }

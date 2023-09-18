@@ -38,7 +38,11 @@ export default function UsersPage() {
       <h1 className="text-xl">Admin - {session?.user?.username}</h1>
       <section className="space-y-20">
         <UserTable data={dataUsers} isLoading={isLoadingUsers} />
-        <OrderTable data={dataOrders} isLoading={isLoadingOrders} />
+        <OrderTable
+          data={dataOrders}
+          isLoading={isLoadingOrders}
+          userId={+userId!}
+        />
         <CarTable data={dataCars} isLoading={isLoadingCars} />
       </section>
     </div>
