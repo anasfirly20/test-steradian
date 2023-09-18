@@ -37,7 +37,7 @@ export async function DELETE(req: NextRequest, { params }: TProps) {
   return NextResponse.json({ message: "Order successfully deleted" });
 }
 
-// PUT by id
+// PUT order by id
 export async function PUT(req: NextRequest, { params }: TProps) {
   const body = await req.json();
   const validation = schema.safeParse(body);
