@@ -13,18 +13,15 @@ export async function GET(req: NextRequest) {
 // ADD ORDER
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  console.log("BODY >>", body);
   const validation = schema.safeParse(body);
 
   if (!validation.success) {
     return NextResponse.json(validation.error.errors, { status: 400 });
   }
-  console.log("ERROR 1");
 
   // Assuming you have some way to identify the user and admin, such as email or ID
   const userEmail = body.userEmail; // Replace with your logic to get the user's email
   const adminEmail = body.adminEmail; // Replace with your logic to get the admin's email
-  console.log("ERROR 2");
 
   // Find the user and admin by their emails (you can use ID or any other unique identifier)
   const user = await prisma.user.findUnique({
@@ -32,7 +29,6 @@ export async function POST(req: NextRequest) {
       email: userEmail,
     },
   });
-  console.log("ERROR 3");
 
   const admin = await prisma.admin.findUnique({
     where: {
@@ -47,7 +43,6 @@ export async function POST(req: NextRequest) {
       { status: 404 }
     );
   }
-  console.log("ERROR 5");
 
   const orderNew = await prisma.order.create({
     data: {
@@ -59,6 +54,5 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  console.log("orderNew >>", orderNew);
   return NextResponse.json(orderNew, { status: 201 });
 }

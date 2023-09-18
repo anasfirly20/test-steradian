@@ -9,8 +9,10 @@ import { signOut, useSession } from "next-auth/react";
 // Miscellaneous
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Button } from "@nextui-org/react";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
+  const path = usePathname();
   const { data: session } = useSession();
 
   const handleSignOut = () => {
@@ -29,7 +31,7 @@ export default function Navbar() {
           className="hover:opacity-80"
         />
       </Link>
-      {session?.user ? (
+      {session?.user && (
         <Button
           size="md"
           color="primary"
@@ -38,11 +40,13 @@ export default function Navbar() {
         >
           Sign Out
         </Button>
-      ) : (
-        <Link href="/sign-in">
-          <Button size="md" color="primary" variant="solid">
-            Sign In
-          </Button>
+      )}
+      {!session?.user && !path.includes("sign-in") && (
+        <Link
+          href="/sign-in"
+          className="bg-[#0070ef] text-white font-semibold p-2 px-4 text-base rounded-lg"
+        >
+          Sign In
         </Link>
       )}
     </nav>
