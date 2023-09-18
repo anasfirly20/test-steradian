@@ -11,10 +11,9 @@ import {
 
 type TProps = {
   data: TGETOrders[];
-  userId: number;
 };
 
-export default function OrderTable({ data, userId }: TProps) {
+export default function OrderTable({ data }: TProps) {
   return (
     <>
       <Table aria-label="Example static collection table">

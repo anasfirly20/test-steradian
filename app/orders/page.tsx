@@ -15,13 +15,15 @@ export default function OrdersPage() {
 
   useEffect(() => {
     if (dataOrder && session?.user?.id) {
-      const filteredOrders = dataOrder.filter((order) => {
-        if (order.user?.id) {
-          return order.user.id === session.user.id;
-        } else {
-          return order.admin?.id === session.user.id;
+      const filteredOrders = dataOrder.filter(
+        (order: { user: { id: string }; admin: { id: string } }) => {
+          if (order.user?.id) {
+            return order.user.id === session.user.id;
+          } else {
+            return order.admin?.id === session.user.id;
+          }
         }
-      });
+      );
       setOrdersData(filteredOrders);
     }
   }, [dataOrder, session]);
@@ -32,7 +34,7 @@ export default function OrdersPage() {
       <p className="mb-5">
         {session?.user?.email} - {session?.user?.id}
       </p>
-      <OrderTable data={ordersData} userId={session?.user?.id} />
+      <OrderTable data={ordersData} />
     </section>
   );
 }
