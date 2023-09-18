@@ -11,12 +11,14 @@ type TGETUsers = {
   address: string;
 };
 
+// Admin
 type TGETAdmin = {
   id: number;
   email: string;
   password: string;
 };
 
+// Car
 type TGETCars = {
   id: number;
   name: string;

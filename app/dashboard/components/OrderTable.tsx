@@ -21,6 +21,7 @@ export default function OrderTable({ data, isLoading }: TProps) {
         <TableHeader>
           <TableColumn>Order No.</TableColumn>
           <TableColumn>Owner</TableColumn>
+          <TableColumn>Owner Id</TableColumn>
           <TableColumn>Owner&apos;s phone No.</TableColumn>
           <TableColumn>Pickup location</TableColumn>
           <TableColumn>Drop Off location</TableColumn>
@@ -36,6 +37,7 @@ export default function OrderTable({ data, isLoading }: TProps) {
               <TableRow key={order?.id}>
                 <TableCell>{order?.id}</TableCell>
                 <TableCell>{order?.user?.email}</TableCell>
+                <TableCell>{order?.user?.id}</TableCell>
                 <TableCell>{order?.user?.phoneNumber}</TableCell>
                 <TableCell>{order?.pickUpLoc}</TableCell>
                 <TableCell>{order?.dropOffLoc}</TableCell>

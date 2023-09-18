@@ -12,13 +12,16 @@ export default function UsersPage() {
   const { data: session } = useSession();
   const userId = session?.user?.id;
 
-  const { data: dataOrders, isLoading: isLoadingOrders } = useQuery(
-    ["ordersData"],
-    getAllOrders
-  );
+  // GET users
   const { data: dataUsers, isLoading: isLoadingUsers } = useQuery(
     ["usersData"],
     getAllUsers
+  );
+
+  // GET orders
+  const { data: dataOrders, isLoading: isLoadingOrders } = useQuery(
+    ["ordersData"],
+    getAllOrders
   );
 
   console.log("dataUSers>>", dataUsers);
@@ -28,8 +31,8 @@ export default function UsersPage() {
       <h1>Welcome to the dashboard!</h1>
       <h1 className="text-xl">Admin - {session?.user?.username}</h1>
       <section className="space-y-20">
-        <OrderTable data={dataOrders} isLoading={isLoadingOrders} />
         <UserTable data={dataUsers} isLoading={isLoadingUsers} />
+        <OrderTable data={dataOrders} isLoading={isLoadingOrders} />
       </section>
     </div>
   );
