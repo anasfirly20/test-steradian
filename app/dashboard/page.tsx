@@ -7,6 +7,8 @@ import { useSession } from "next-auth/react";
 import { getAllOrders } from "@/api/routes/orders";
 import OrderTable from "./components/OrderTable";
 import UserTable from "./components/UserTable";
+import { getAllCars } from "@/api/routes/cars";
+import CarTable from "./components/CarTable";
 
 export default function UsersPage() {
   const { data: session } = useSession();
@@ -24,7 +26,13 @@ export default function UsersPage() {
     getAllOrders
   );
 
-  console.log("dataUSers>>", dataUsers);
+  // GET cars
+  const { data: dataCars, isLoading: isLoadingCars } = useQuery(
+    ["carsData"],
+    getAllCars
+  );
+
+  console.log("datacars>>", dataCars);
 
   return (
     <div className="min-h-screen">
@@ -33,6 +41,7 @@ export default function UsersPage() {
       <section className="space-y-20">
         <UserTable data={dataUsers} isLoading={isLoadingUsers} />
         <OrderTable data={dataOrders} isLoading={isLoadingOrders} />
+        <CarTable data={dataCars} isLoading={isLoadingCars} />
       </section>
     </div>
   );
