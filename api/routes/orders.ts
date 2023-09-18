@@ -5,6 +5,11 @@ export const getAllOrders = async () => {
   return res.data;
 };
 
+export const getOrderById = async (id: number) => {
+  const res = await api.get(`orders/${id}`);
+  return res.data;
+};
+
 export const postOrder = async (body: TPOSTOrder) => {
   const res = await api.post("/orders", body);
   return res.data;

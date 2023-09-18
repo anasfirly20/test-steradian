@@ -15,11 +15,14 @@ import {
 
 // Miscellaneous
 import { Icon } from "@iconify/react";
+import toast from "react-hot-toast";
+import { useDisclosure } from "@nextui-org/use-disclosure";
 
 // Api
-import { deleteOrder } from "@/api/routes/orders";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { deleteOrder, getOrderById } from "@/api/routes/orders";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import ModalEdit from "./ModalEdit";
+import { useState } from "react";
 
 type TProps = {
   data: TGETOrders[];
@@ -38,6 +41,22 @@ export default function OrderTable({ data }: TProps) {
       console.log(err);
     },
   });
+
+  // Modal Handlers
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  //
+  const [order, setOrder] = useState({});
+
+  const getSingleOrder = async (userId: number) => {
+    try {
+      const res = await getOrderById(userId);
+      setOrder(res);
+      console.log(">>>", res);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
   return (
     <>
@@ -61,7 +80,12 @@ export default function OrderTable({ data }: TProps) {
               <TableCell className="flex justify-between group">
                 {order?.pickUpTime}
                 <section className="flex gap-1 group-hover:opacity-100 opacity-0 transition-opacity ease-out">
-                  <button>
+                  <button
+                    onClick={() => {
+                      getSingleOrder(order?.id);
+                      onOpen();
+                    }}
+                  >
                     <Icon icon="bx:edit" fontSize={25} />
                   </button>
                   <button
@@ -81,6 +105,7 @@ export default function OrderTable({ data }: TProps) {
           ))}
         </TableBody>
       </Table>
+      <ModalEdit isOpen={isOpen} onOpenChange={onOpenChange} order={order} />
     </>
   );
 }
