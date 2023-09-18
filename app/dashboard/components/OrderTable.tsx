@@ -19,7 +19,7 @@ export default function OrderTable({ data, isLoading }: TProps) {
       <h1 className="text-center my-5">Order details</h1>
       <Table aria-label="Example static collection table">
         <TableHeader>
-          <TableColumn>Order No.</TableColumn>
+          <TableColumn>Order Id</TableColumn>
           <TableColumn>Owner</TableColumn>
           <TableColumn>Owner Id</TableColumn>
           <TableColumn>Owner&apos;s phone No.</TableColumn>

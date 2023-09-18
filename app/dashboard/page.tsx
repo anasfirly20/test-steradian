@@ -32,8 +32,6 @@ export default function UsersPage() {
     getAllCars
   );
 
-  console.log("datacars>>", dataCars);
-
   return (
     <div className="min-h-screen">
       <h1>Welcome to the dashboard!</h1>

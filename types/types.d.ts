@@ -30,6 +30,7 @@ type TGETCars = {
   dayRate: string;
   monthRate: string;
   orderId: number;
+  order: TGETOrderById;
 };
 
 // Order

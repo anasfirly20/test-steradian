@@ -29,7 +29,7 @@ export default function RootLayout({
         />
         <Providers>
           <Navbar />
-          <main className="px-[4vw] py-[2vh]">{children}</main>
+          <main className="px-[4vw] pt-[2vh] pb-[10vh]">{children}</main>
         </Providers>
       </body>
     </html>
