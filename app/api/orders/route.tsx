@@ -6,11 +6,12 @@ import prisma from "@/prisma/client";
 export async function GET(req: NextRequest) {
   const orders = await prisma.order.findMany({
     select: {
+      id: true,
       pickUpLoc: true,
       dropOffLoc: true,
       pickUpDate: true,
       dropOffDate: true,
-      id: true,
+      pickUpTime: true,
       car: true,
       user: true,
       admin: true,

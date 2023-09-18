@@ -5,20 +5,34 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllOrders } from "@/api/routes/orders";
 import OrderTable from "./components/OrderTable";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export default function OrdersPage() {
   const { data: session } = useSession();
+  const { data: dataOrder } = useQuery(["ordersData"], getAllOrders);
 
-  const { data = [], isLoading } = useQuery<TGETUsers[]>(["usersData"], () =>
-    getAllOrders()
-  );
+  const [ordersData, setOrdersData] = useState([]);
 
-  //   console.log("DATA>>", data);
-  console.log("session>>", session);
+  useEffect(() => {
+    if (dataOrder && session?.user?.id) {
+      const filteredOrders = dataOrder.filter((order) => {
+        if (order.user?.id) {
+          return order.user.id === session.user.id;
+        } else {
+          return order.admin?.id === session.user.id;
+        }
+      });
+      setOrdersData(filteredOrders);
+    }
+  }, [dataOrder, session]);
 
   return (
     <section className="min-h-screen">
-      <OrderTable />
+      <h1 className="text-xl">Your orders</h1>
+      <p className="mb-5">
+        {session?.user?.email} - {session?.user?.id}
+      </p>
+      <OrderTable data={ordersData} userId={session?.user?.id} />
     </section>
   );
 }
