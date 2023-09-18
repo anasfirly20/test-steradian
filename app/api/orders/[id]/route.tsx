@@ -10,6 +10,11 @@ type TProps = {
 export async function GET(req: NextRequest, { params }: TProps) {
   const order = await prisma.order.findUnique({
     where: { id: parseInt(params.id) },
+    include: {
+      car: true,
+      // admin: true,
+      // user: true,
+    },
   });
 
   if (!order) {

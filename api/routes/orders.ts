@@ -14,3 +14,8 @@ export const deleteOrder = async (id: number) => {
   const res = await api.delete(`/orders/${id}`);
   return res.data;
 };
+
+export const putOrder = async (id: number, body: TPUTOrder) => {
+  const res = await api.put(`/orders/${id}`, body);
+  return res.data;
+};

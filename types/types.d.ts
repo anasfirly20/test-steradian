@@ -17,29 +17,6 @@ type TGETAdmin = {
   password: string;
 };
 
-type TGETOrderById = {
-  id: number;
-  pickUpLoc: string;
-  dropOffLoc: string;
-  pickUpDate: string;
-  dropOffDate: string;
-  pickUpTime: string;
-  userId: number;
-  adminId: number;
-};
-
-type TGETOrders = {
-  id: number;
-  pickUpLoc: string;
-  dropOffLoc: string;
-  pickUpDate: string;
-  dropOffDate: string;
-  pickUpTime: string;
-  car: TGETCars[];
-  user: TGETUsers;
-  admin: TGETAdmin;
-};
-
 type TGETCars = {
   id: number;
   name: string;
@@ -53,7 +30,30 @@ type TGETCars = {
   orderId: number;
 };
 
-// POST
+// Order
+type TGETOrders = {
+  id: number;
+  pickUpLoc: string;
+  dropOffLoc: string;
+  pickUpDate: string;
+  dropOffDate: string;
+  pickUpTime: string;
+  car: TGETCars[];
+  user: TGETUsers;
+  admin: TGETAdmin;
+};
+
+type TGETOrderById = {
+  id: number;
+  pickUpLoc: string;
+  dropOffLoc: string;
+  pickUpDate: string;
+  dropOffDate: string;
+  pickUpTime: string;
+  userId: number;
+  adminId: number;
+};
+
 type TPOSTOrder = {
   pickUpLoc: string;
   dropOffLoc: string;
@@ -62,4 +62,12 @@ type TPOSTOrder = {
   dropOffDate: string;
   userId?: number;
   adminId?: number;
+};
+
+type TPUTOrder = {
+  pickUpLoc: string;
+  dropOffLoc: string;
+  pickUpTime: string;
+  pickUpDate: string;
+  dropOffDate: string;
 };
