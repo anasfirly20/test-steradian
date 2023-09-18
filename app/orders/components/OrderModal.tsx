@@ -10,7 +10,12 @@ import {
 } from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
+
+// Miscellanepis
 import { ChangeEvent, useState } from "react";
+import { useSession } from "next-auth/react";
+
+// Components
 import InputLabel from "@/app/components/InputLabel";
 
 type TProps = {
@@ -28,6 +33,8 @@ const initialValues = {
 };
 
 export default function OrderModal({ isOpen, onOpen, onOpenChange }: TProps) {
+  const { data: session } = useSession();
+
   const [data, setData] = useState(initialValues);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +44,8 @@ export default function OrderModal({ isOpen, onOpen, onOpenChange }: TProps) {
 
   const handleAdd = () => {
     console.log("DATA>>", data);
+
+    console.log("SESSION >>", session?.user.id);
   };
 
   return (

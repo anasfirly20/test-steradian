@@ -1,3 +1,4 @@
+// GET
 type TGETUsers = {
   id: number;
   email: string;
@@ -50,4 +51,15 @@ type TGETCars = {
   dayRate: string;
   monthRate: string;
   orderId: number;
+};
+
+// POST
+type TPOSTOrder = {
+  pickUpLoc: string;
+  dropOffLoc: string;
+  pickUpTime: string;
+  pickUpDate: string;
+  dropOffDate: string;
+  userId?: number;
+  adminId?: number;
 };

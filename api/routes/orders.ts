@@ -4,3 +4,8 @@ export const getAllOrders = async () => {
   const res = await api.get("/orders");
   return res.data;
 };
+
+export const PosstOrder = async (body: TPOSTOrder) => {
+  const res = await api.post("/orders", body);
+  return res.data;
+};
