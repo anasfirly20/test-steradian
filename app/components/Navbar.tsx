@@ -4,16 +4,14 @@
 import Link from "next/link";
 
 // Next auth
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 // Miscellaneous
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Button } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const { data: session } = useSession();
-  const router = useRouter();
 
   const handleSignOut = () => {
     signOut({
