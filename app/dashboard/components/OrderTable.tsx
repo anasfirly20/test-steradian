@@ -10,13 +10,12 @@ import {
 
 type TProps = {
   data: TGETOrders[];
+  isLoading: boolean;
 };
 
-export default function OrderTable({ data }: TProps) {
-  console.log("DATA >>", data);
-
+export default function OrderTable({ data, isLoading }: TProps) {
   return (
-    <>
+    <article>
       <h1 className="text-center my-5">Order details</h1>
       <Table aria-label="Example static collection table">
         <TableHeader>
@@ -29,21 +28,25 @@ export default function OrderTable({ data }: TProps) {
           <TableColumn>Drop Off Date</TableColumn>
           <TableColumn>Pickup Time</TableColumn>
         </TableHeader>
-        <TableBody>
-          {data?.map((order) => (
-            <TableRow key={order?.id}>
-              <TableCell>{order?.id}</TableCell>
-              <TableCell>{order?.user?.email}</TableCell>
-              <TableCell>{order?.user?.phoneNumber}</TableCell>
-              <TableCell>{order?.pickUpLoc}</TableCell>
-              <TableCell>{order?.dropOffLoc}</TableCell>
-              <TableCell>{formatDate(order?.pickUpDate)}</TableCell>
-              <TableCell>{formatDate(order?.dropOffDate)}</TableCell>
-              <TableCell>{order?.pickUpTime}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+        {isLoading ? (
+          <TableBody emptyContent={"Loading..."}>{[]}</TableBody>
+        ) : (
+          <TableBody>
+            {data?.map((order) => (
+              <TableRow key={order?.id}>
+                <TableCell>{order?.id}</TableCell>
+                <TableCell>{order?.user?.email}</TableCell>
+                <TableCell>{order?.user?.phoneNumber}</TableCell>
+                <TableCell>{order?.pickUpLoc}</TableCell>
+                <TableCell>{order?.dropOffLoc}</TableCell>
+                <TableCell>{formatDate(order?.pickUpDate)}</TableCell>
+                <TableCell>{formatDate(order?.dropOffDate)}</TableCell>
+                <TableCell>{order?.pickUpTime}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        )}
       </Table>
-    </>
+    </article>
   );
 }
