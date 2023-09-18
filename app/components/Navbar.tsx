@@ -35,7 +35,7 @@ export default function Navbar() {
         <Button
           size="md"
           color="primary"
-          variant="bordered"
+          variant="ghost"
           onClick={handleSignOut}
         >
           Sign Out

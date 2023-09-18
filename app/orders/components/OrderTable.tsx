@@ -18,8 +18,6 @@ type TProps = {
 };
 
 export default function OrderTable({ data }: TProps) {
-  console.log(">>>", data);
-
   return (
     <>
       <Table aria-label="Example static collection table">

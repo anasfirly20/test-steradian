@@ -3,9 +3,15 @@
 // Api
 import { useQuery } from "@tanstack/react-query";
 import { getAllOrders } from "@/api/routes/orders";
-import OrderTable from "./components/OrderTable";
+
+// Miscellaneous
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useDisclosure } from "@nextui-org/use-disclosure";
+
+// Components
+import OrderModal from "./components/OrderModal";
+import OrderTable from "./components/OrderTable";
 
 export default function OrdersPage() {
   const { data: session } = useSession();
@@ -27,13 +33,17 @@ export default function OrdersPage() {
     }
   }, [dataOrder, session]);
 
+  // Modal Handler
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   return (
     <section className="min-h-screen">
       <h1 className="text-xl">Hello! {session?.user?.username}</h1>
       <p className="mb-5">
         {session?.user?.email} - {session?.user?.id}
       </p>
-      <h1 className="text-center mb-5">Order details</h1>
+      <OrderModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
+      <h1 className="text-center my-5">Order details</h1>
       <OrderTable data={ordersData} />
     </section>
   );
