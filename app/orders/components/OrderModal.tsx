@@ -36,14 +36,15 @@ export default function OrderModal({
   userId,
 }: TProps) {
   const queryClient = useQueryClient();
-  const [data, setData] = useState({
+  const initialValues = {
     pickUpLoc: "",
     dropOffLoc: "",
     pickUpTime: "",
     pickUpDate: "",
     dropOffDate: "",
     userId: userId,
-  });
+  };
+  const [data, setData] = useState(initialValues);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -55,22 +56,13 @@ export default function OrderModal({
       toast.error("You are not authenticated to do this operation");
     }
     newOrderMutation.mutate(data);
-    console.log("DATA>>", data);
-    console.log("userId >>", userId);
   };
 
   const newOrderMutation = useMutation(postOrder, {
     onSuccess: () => {
       queryClient.invalidateQueries(["ordersData"]);
       toast.success("New user has been added");
-      setData({
-        ...data,
-        pickUpLoc: "",
-        dropOffLoc: "",
-        pickUpTime: "",
-        pickUpDate: "",
-        dropOffDate: "",
-      });
+      setData(initialValues);
     },
     onError: (err) => {
       toast.error("An error occurred");
