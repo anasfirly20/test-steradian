@@ -9,12 +9,14 @@ import { Button } from "@nextui-org/react";
 // Api
 import { useMutation } from "@tanstack/react-query";
 import { PostUser } from "@/api/routes/users";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const initialValues = {
   username: "",
   password: "",
   email: "",
-  phone: "",
+  phoneNumber: "",
   city: "",
   zip: "",
   message: "",
@@ -22,6 +24,7 @@ const initialValues = {
 };
 
 export default function SignUpPage() {
+  const router = useRouter();
   const [data, setData] = useState(initialValues);
 
   const handleChange = (
@@ -35,9 +38,19 @@ export default function SignUpPage() {
     }
   };
 
+  const newUserMutation = useMutation(PostUser, {
+    onSuccess: () => {
+      toast.success("Successfully registered");
+      setData(initialValues);
+      router.push("/sign-in");
+    },
+    onError: (err) => console.log(err),
+  });
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("data >>", data);
+    newUserMutation.mutate(data);
   };
 
   return (
@@ -71,8 +84,8 @@ export default function SignUpPage() {
         <CustomInput
           placeholder="Phone Number"
           type="text"
-          name="phone"
-          value={data?.phone}
+          name="phoneNumber"
+          value={data?.phoneNumber}
           onChange={(e) => handleChange(e)}
         />
         <CustomInput

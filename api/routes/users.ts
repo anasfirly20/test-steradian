@@ -5,7 +5,7 @@ export const getAllUsers = async () => {
   return res.data;
 };
 
-export const PostUser = async () => {
-  const res = await api.post(`/users`);
+export const PostUser = async (body: any) => {
+  const res = await api.post(`/users`, body);
   return res.data;
 };
