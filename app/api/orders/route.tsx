@@ -4,7 +4,18 @@ import prisma from "@/prisma/client";
 
 // GET ALL ORDERS
 export async function GET(req: NextRequest) {
-  const orders = await prisma.order.findMany();
+  const orders = await prisma.order.findMany({
+    select: {
+      pickUpLoc: true,
+      dropOffLoc: true,
+      pickUpDate: true,
+      dropOffDate: true,
+      id: true,
+      car: true,
+      user: true,
+      admin: true,
+    },
+  });
   return NextResponse.json(orders);
 }
 
@@ -22,8 +33,8 @@ export async function POST(req: NextRequest) {
       pickUpLoc: body.pickUpLoc,
       dropOffLoc: body.dropOffLoc,
       pickUpTime: body.pickUpTime,
-      userId: body.userId, // Connect the order to the user using the user's ID
-      adminId: body.adminId, // Connect the order to the admin using the admin's ID
+      userId: body.userId,
+      adminId: body.adminId,
     },
   });
 

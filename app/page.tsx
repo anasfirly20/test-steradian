@@ -10,8 +10,8 @@ export default async function Home() {
       {session?.user ? (
         <section className="flex flex-col justify-center items-center">
           <h1 className="text-7xl">Welcome! {session?.user?.username}</h1>
-          <Link href="/admin" className="hover:opacity-80 mt-10">
-            Go To Dashboard
+          <Link href="/orders" className="hover:opacity-80 mt-10">
+            Go To Orders
           </Link>
         </section>
       ) : (
