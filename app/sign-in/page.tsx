@@ -38,7 +38,8 @@ export default function SignInPage() {
       toast.error("Incorrect email/password");
     } else {
       toast.success("Logged in");
-      router.push("/users");
+      router.push("/");
+      router.refresh();
     }
   };
 

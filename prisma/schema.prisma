@@ -20,7 +20,7 @@ model User {
   password    String
   username    String
   address     String
-  order      Order[]
+  order       Order[]
 }
 
 model Order {
@@ -30,11 +30,13 @@ model Order {
   pickUpDate  DateTime @default(now())
   dropOffDate DateTime @updatedAt
   pickUpTime  String
-  user        User     @relation(fields: [userId], references: [id])
-  userId      Int
+  user        User?    @relation(fields: [userId], references: [id])
+  userId      Int?
   car         Car[]
-  admin       Admin    @relation(fields: [adminId], references: [id])
-  adminId     Int
+  admin       Admin?   @relation(fields: [adminId], references: [id])
+  adminId     Int?
+
+  
 }
 
 model Car {
