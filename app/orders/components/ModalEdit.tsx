@@ -8,8 +8,12 @@ import {
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import InputLabel from "@/app/components/InputLabel";
+
+// Api
+import { putOrderById } from "@/api/routes/orders";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 type TProps = {
   isOpen: boolean;
@@ -17,15 +21,16 @@ type TProps = {
   order: TGETOrderById;
 };
 
+const initialValues = {
+  pickUpLoc: "",
+  dropOffLoc: "",
+  pickUpDate: "",
+  dropOffDate: "",
+  pickUpTime: "",
+};
+
 export default function ModalEdit({ isOpen, onOpenChange, order }: TProps) {
   const queryClient = useQueryClient();
-  const initialValues = {
-    pickUpLoc: "",
-    dropOffLoc: "",
-    pickUpTime: "",
-    pickUpDate: "",
-    dropOffDate: "",
-  };
   const [data, setData] = useState(initialValues);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,6 +43,19 @@ export default function ModalEdit({ isOpen, onOpenChange, order }: TProps) {
       setData(order);
     }
   }, [order]);
+
+  const editOrderMutation = useMutation(
+    (body: TPUTOrder) => {
+      const id = data?.id; // Assuming data contains the ID
+      return putOrderById(id, body);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["ordersData"]);
+        toast.success("Order has been updated");
+      },
+    }
+  );
 
   return (
     <>
@@ -91,7 +109,13 @@ export default function ModalEdit({ isOpen, onOpenChange, order }: TProps) {
                 />
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onPress={onClose}>
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    editOrderMutation.mutate(data);
+                    onClose();
+                  }}
+                >
                   Edit order
                 </Button>
               </ModalFooter>

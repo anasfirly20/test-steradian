@@ -45,14 +45,13 @@ export default function OrderTable({ data }: TProps) {
   // Modal Handlers
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  //
+  // get single order
   const [order, setOrder] = useState({});
 
   const getSingleOrder = async (userId: number) => {
     try {
       const res = await getOrderById(userId);
       setOrder(res);
-      console.log(">>>", res);
     } catch (error) {
       console.log("error", error);
     }
@@ -105,7 +104,11 @@ export default function OrderTable({ data }: TProps) {
           ))}
         </TableBody>
       </Table>
-      <ModalEdit isOpen={isOpen} onOpenChange={onOpenChange} order={order} />
+      <ModalEdit
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        order={order as TGETOrderById}
+      />
     </>
   );
 }
