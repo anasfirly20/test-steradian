@@ -14,6 +14,7 @@ import { Input } from "@nextui-org/input";
 // Miscellanepis
 import { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
+import { formValidator } from "@/helpers/utils/utils";
 
 // Components
 import InputLabel from "@/app/components/InputLabel";
@@ -51,17 +52,10 @@ export default function OrderModal({
     setData({ ...data, [name]: value });
   };
 
-  const handleAdd = () => {
-    if (!userId) {
-      toast.error("You are not authenticated to do this operation");
-    }
-    newOrderMutation.mutate(data);
-  };
-
   const newOrderMutation = useMutation(postOrder, {
     onSuccess: () => {
       queryClient.invalidateQueries(["ordersData"]);
-      toast.success("New user has been added");
+      toast.success("New order has been added");
       setData(initialValues);
     },
     onError: (err) => {
@@ -69,6 +63,13 @@ export default function OrderModal({
       console.log(err);
     },
   });
+
+  const handleAdd = () => {
+    if (!userId) {
+      toast.error("You are not authenticated to do this operation");
+    }
+    newOrderMutation.mutate(data);
+  };
 
   return (
     <>
@@ -124,6 +125,10 @@ export default function OrderModal({
                   color="primary"
                   variant="solid"
                   onPress={() => {
+                    if (!formValidator(data)) {
+                      toast.error("All fields are mandatory");
+                      return;
+                    }
                     handleAdd();
                     onClose();
                   }}
