@@ -6,6 +6,10 @@ import { ChangeEvent, useState } from "react";
 import CustomInput from "../components/CustomInput";
 import { Button } from "@nextui-org/react";
 
+// Api
+import { useMutation } from "@tanstack/react-query";
+import { PostUser } from "@/api/routes/users";
+
 const initialValues = {
   username: "",
   password: "",
@@ -24,14 +28,23 @@ export default function SignUpPage() {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setData({ ...data, [name]: value });
+    if (name === "zip") {
+      setData({ ...data, [name.toString()]: Number(value) });
+    } else {
+      setData({ ...data, [name]: value });
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("data >>", data);
   };
 
   return (
     <article className="min-h-screen p-24">
       <h1 className="font-bold text-center text-3xl">Sign Up</h1>
       <form
-        // onSubmit={handleSubmit}
+        onSubmit={handleSubmit}
         className="grid grid-cols-2 mt-10 w-[60%] mx-auto gap-x-5 gap-y-5"
       >
         <CustomInput
