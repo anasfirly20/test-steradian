@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/lib/auth";
+import { authOptions } from "@/helpers/lib/auth";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 
