@@ -9,3 +9,8 @@ export const postOrder = async (body: TPOSTOrder) => {
   const res = await api.post("/orders", body);
   return res.data;
 };
+
+export const deleteOrder = async (id: number) => {
+  const res = await api.delete(`/orders/${id}`);
+  return res.data;
+};

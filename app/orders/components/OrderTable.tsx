@@ -16,11 +16,29 @@ import {
 // Miscellaneous
 import { Icon } from "@iconify/react";
 
+// Api
+import { deleteOrder } from "@/api/routes/orders";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+
 type TProps = {
   data: TGETOrders[];
 };
 
 export default function OrderTable({ data }: TProps) {
+  const queryClient = useQueryClient();
+
+  const deleteOrderMutation = useMutation(deleteOrder, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["ordersData"]);
+      toast.success("Order deleted");
+    },
+    onError: (err) => {
+      toast.error("An error occurred");
+      console.log(err);
+    },
+  });
+
   return (
     <>
       <Table aria-label="Example static collection table">
@@ -33,20 +51,25 @@ export default function OrderTable({ data }: TProps) {
           <TableColumn>Pickup Time</TableColumn>
         </TableHeader>
         <TableBody>
-          {data?.map((e) => (
-            <TableRow key={e.id}>
-              <TableCell>{e.id}</TableCell>
-              <TableCell>{e.pickUpLoc}</TableCell>
-              <TableCell>{e.dropOffLoc}</TableCell>
-              <TableCell>{formatDate(e.pickUpDate)}</TableCell>
-              <TableCell>{formatDate(e.dropOffDate)}</TableCell>
+          {data?.map((order) => (
+            <TableRow key={order?.id}>
+              <TableCell>{order?.id}</TableCell>
+              <TableCell>{order?.pickUpLoc}</TableCell>
+              <TableCell>{order?.dropOffLoc}</TableCell>
+              <TableCell>{formatDate(order?.pickUpDate)}</TableCell>
+              <TableCell>{formatDate(order?.dropOffDate)}</TableCell>
               <TableCell className="flex justify-between group">
-                {e.pickUpTime}
+                {order?.pickUpTime}
                 <section className="flex gap-1 group-hover:opacity-100 opacity-0 transition-opacity ease-out">
                   <button>
                     <Icon icon="bx:edit" fontSize={25} />
                   </button>
-                  <button>
+                  <button
+                    onClick={() => {
+                      deleteOrderMutation.mutate(order?.id);
+                      console.log("order id>>", order?.id);
+                    }}
+                  >
                     <Icon
                       icon="material-symbols:delete-outline"
                       fontSize={25}
