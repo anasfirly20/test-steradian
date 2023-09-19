@@ -116,7 +116,7 @@ export default function SignUpPage() {
         <textarea
           rows={4}
           cols={50}
-          className="p-3 outline-none text-black rounded-lg w-full col-span-2"
+          className="p-3 outline-none text-black rounded-lg w-full col-span-2 bg-[#F5F6FB]"
           name="message"
           value={data?.message}
           placeholder="Enter your message"

@@ -18,7 +18,7 @@ export default function CustomInput({
   return (
     <>
       <input
-        className="p-3 outline-none text-black rounded-lg"
+        className="p-3 outline-none text-black rounded-lg bg-[#F5F6FB]"
         placeholder={placeholder}
         type={type}
         name={name}
