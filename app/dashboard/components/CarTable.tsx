@@ -80,6 +80,7 @@ export default function CarTable({ data, isLoading }: TProps) {
           <TableColumn>Owner Id</TableColumn>
           <TableColumn>Name</TableColumn>
           <TableColumn>Type</TableColumn>
+          <TableColumn>Rating</TableColumn>
           <TableColumn>Fuel</TableColumn>
           <TableColumn>Hour Rate</TableColumn>
           <TableColumn>Day Rate</TableColumn>
@@ -98,6 +99,7 @@ export default function CarTable({ data, isLoading }: TProps) {
                 <TableCell>{car?.order?.userId}</TableCell>
                 <TableCell>{car?.name}</TableCell>
                 <TableCell>{car?.carType}</TableCell>
+                <TableCell>{car?.rating}</TableCell>
                 <TableCell>{car?.fuel}</TableCell>
                 <TableCell>{car?.hourRate}</TableCell>
                 <TableCell>{car?.dayRate}</TableCell>
