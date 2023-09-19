@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
   const adminNew = await prisma.admin.create({
     data: {
       email: body.email,
-      password: hashedPassword,
+      password: body.password,
     },
   });
   const { password, ...rest } = adminNew;
