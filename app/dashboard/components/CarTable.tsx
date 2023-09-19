@@ -7,12 +7,15 @@ import {
   TableRow,
   TableCell,
   Tooltip,
+  useDisclosure,
 } from "@nextui-org/react";
 import ModalAddCar from "./ModalAddCar";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteCar } from "@/api/routes/cars";
+import { deleteCar, getCarById } from "@/api/routes/cars";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import ModalEditCar from "./ModalEditCar";
 
 type TProps = {
   data: TGETCars[];
@@ -34,10 +37,35 @@ export default function CarTable({ data, isLoading }: TProps) {
     },
   });
 
+  // Get single car
+  const [car, setCar] = useState({});
+
+  const getSingleCar = async (carId: number) => {
+    try {
+      const res = await getCarById(carId);
+      setCar(res);
+      console.log("car single>>", res);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  // Modal handler
+  const {
+    isOpen: isOpenEdit,
+    onOpen: onOpenEdit,
+    onOpenChange: onOpenChangeEdit,
+  } = useDisclosure();
+
   return (
     <article>
       <h1 className="text-center my-5">Car details</h1>
       <ModalAddCar />
+      <ModalEditCar
+        isOpen={isOpenEdit}
+        onOpenChange={onOpenChangeEdit}
+        car={car as TGETCarById}
+      />
       <Table aria-label="Example static collection table">
         <TableHeader>
           <TableColumn>Car Id</TableColumn>
@@ -74,10 +102,10 @@ export default function CarTable({ data, isLoading }: TProps) {
                     <Tooltip content="Edit car">
                       <button
                         className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                        // onClick={() => {
-                        //   getSingleOrder(order?.id);
-                        //   onOpenEdit();
-                        // }}
+                        onClick={() => {
+                          getSingleCar(car?.id);
+                          onOpenEdit();
+                        }}
                       >
                         <Icon icon="bx:edit" fontSize={25} />
                       </button>

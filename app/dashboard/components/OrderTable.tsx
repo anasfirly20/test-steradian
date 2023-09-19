@@ -51,7 +51,7 @@ export default function OrderTable({ data, isLoading, userId }: TProps) {
     onOpenChange: onOpenChangeEdit,
   } = useDisclosure();
 
-  // get single order
+  // Get single order
   const [order, setOrder] = useState({});
 
   const getSingleOrder = async (userId: number) => {
