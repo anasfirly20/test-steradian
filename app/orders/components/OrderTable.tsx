@@ -80,6 +80,7 @@ export default function OrderTable({ data }: TProps) {
                 {order?.pickUpTime}
                 <section className="flex gap-1 group-hover:opacity-100 opacity-0 transition-opacity ease-out">
                   <button
+                    className="text-lg text-default-400 cursor-pointer active:opacity-50"
                     onClick={() => {
                       getSingleOrder(order?.id);
                       onOpen();
@@ -88,6 +89,7 @@ export default function OrderTable({ data }: TProps) {
                     <Icon icon="bx:edit" fontSize={25} />
                   </button>
                   <button
+                    className="text-lg text-danger cursor-pointer active:opacity-50"
                     onClick={() => {
                       deleteOrderMutation.mutate(order?.id);
                     }}
