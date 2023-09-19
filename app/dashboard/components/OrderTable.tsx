@@ -99,6 +99,7 @@ export default function OrderTable({ data, isLoading, userId }: TProps) {
           <TableColumn>Pickup Date</TableColumn>
           <TableColumn>Drop Off Date</TableColumn>
           <TableColumn>Pickup Time</TableColumn>
+          <TableColumn> </TableColumn>
         </TableHeader>
         {isLoading ? (
           <TableBody emptyContent={"Loading..."}>{[]}</TableBody>
@@ -116,6 +117,8 @@ export default function OrderTable({ data, isLoading, userId }: TProps) {
                 <TableCell>{formatDate(order?.dropOffDate)}</TableCell>
                 <TableCell className="flex justify-between items-center">
                   {order?.pickUpTime}{" "}
+                </TableCell>
+                <TableCell>
                   <section className="relative flex items-center gap-2">
                     <Tooltip content="Edit order">
                       <button

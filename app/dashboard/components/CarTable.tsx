@@ -87,6 +87,7 @@ export default function CarTable({ data, isLoading }: TProps) {
           <TableColumn>Month Rate</TableColumn>
           <TableColumn>Pickup Location</TableColumn>
           <TableColumn>Pickup Date</TableColumn>
+          <TableColumn> </TableColumn>
         </TableHeader>
         {isLoading ? (
           <TableBody emptyContent={"Loading..."}>{[]}</TableBody>
@@ -107,6 +108,8 @@ export default function CarTable({ data, isLoading }: TProps) {
                 <TableCell>{car?.order?.pickUpLoc}</TableCell>
                 <TableCell className="flex justify-between items-center">
                   {formatDate(car?.order?.pickUpDate)}
+                </TableCell>
+                <TableCell>
                   <section className="relative flex items-center gap-2">
                     <Tooltip content="Edit car">
                       <button
