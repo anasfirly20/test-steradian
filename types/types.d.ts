@@ -1,4 +1,4 @@
-// GET
+// User
 type TGETUsers = {
   id: number;
   email: string;
