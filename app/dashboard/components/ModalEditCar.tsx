@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
 import {
   Modal,
@@ -8,6 +8,12 @@ import {
   ModalFooter,
 } from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
+import CustomSelect from "@/app/components/CustomSelect";
+import { car_ratings } from "@/helpers/constants/constants";
+import { Input } from "@nextui-org/input";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { putCar } from "@/api/routes/cars";
+import toast from "react-hot-toast";
 
 type TProps = {
   isOpen: boolean;
@@ -15,7 +21,58 @@ type TProps = {
   car: TGETCarById;
 };
 
+const initialValues = {
+  name: "",
+  carType: "",
+  rating: 0,
+  fuel: "",
+  image: "",
+  hourRate: "",
+  dayRate: "",
+  monthRate: "",
+  orderId: 0,
+};
+
 export default function ModalEditCar({ isOpen, onOpenChange, car }: TProps) {
+  const [data, setData] = useState(initialValues);
+
+  const queryClient = useQueryClient();
+  const cachedOrders = queryClient.getQueryData<TGETOrders[]>(["ordersData"]);
+
+  useEffect(() => {
+    if (car) {
+      setData(car);
+    }
+  }, [car]);
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    if (name === "rating") {
+      setData({ ...data, [name]: +value });
+    } else {
+      setData({ ...data, [name]: value });
+    }
+  };
+
+  const editCarMutation = useMutation(
+    (body: TPUTCar) => {
+      const id = data?.id;
+      return putCar(id, body);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["carsData"]);
+        toast.success("Car has been updated");
+      },
+      onError: (err) => {
+        toast.error("An error occurred");
+        console.log(err);
+      },
+    }
+  );
+
   return (
     <>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -23,34 +80,75 @@ export default function ModalEditCar({ isOpen, onOpenChange, car }: TProps) {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Modal Title
+                Edit car
               </ModalHeader>
-              <ModalBody>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Magna exercitation reprehenderit magna aute tempor cupidatat
-                  consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-                  incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-                  aliqua enim laboris do dolor eiusmod. Et mollit incididunt
-                  nisi consectetur esse laborum eiusmod pariatur proident Lorem
-                  eiusmod et. Culpa deserunt nostrud ad veniam.
-                </p>
+              <ModalBody className="grid grid-cols-2 gap-y-8">
+                <Input
+                  variant="underlined"
+                  label="Name"
+                  name="name"
+                  value={data?.name}
+                  onChange={handleChange}
+                />
+                <Input
+                  variant="underlined"
+                  label="Type"
+                  name="carType"
+                  value={data?.carType}
+                  onChange={handleChange}
+                />
+                <Input
+                  variant="underlined"
+                  label="Fuel"
+                  name="fuel"
+                  value={data?.fuel}
+                  onChange={handleChange}
+                />
+                <Input
+                  variant="underlined"
+                  label="Hour Rate"
+                  name="hourRate"
+                  value={data?.hourRate}
+                  onChange={handleChange}
+                />
+                <Input
+                  variant="underlined"
+                  label="Day Rate"
+                  name="dayRate"
+                  value={data?.dayRate}
+                  onChange={handleChange}
+                />
+                <Input
+                  variant="underlined"
+                  label="Month Rate"
+                  name="monthRate"
+                  value={data?.monthRate}
+                  onChange={handleChange}
+                />
+                <CustomSelect
+                  label="Rating"
+                  dataToMap={car_ratings}
+                  onChange={(e) => {
+                    setData({ ...data, rating: +e.target.value });
+                  }}
+                />
+                <CustomSelect
+                  label="Order Id"
+                  dataToMap={cachedOrders}
+                  onChange={(e) => {
+                    setData({ ...data, orderId: +e.target.value });
+                  }}
+                />
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    editCarMutation.mutate(data);
+                    onClose();
+                  }}
+                >
+                  Edit Car
                 </Button>
               </ModalFooter>
             </>

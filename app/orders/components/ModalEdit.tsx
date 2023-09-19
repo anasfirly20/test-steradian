@@ -78,7 +78,7 @@ export default function ModalEdit({ isOpen, onOpenChange, order }: TProps) {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Modal Title
+                Edit Order
               </ModalHeader>
               <ModalBody className="grid grid-cols-2 gap-y-8">
                 <Input

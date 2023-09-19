@@ -20,3 +20,24 @@ export const car_ratings: TCarRatings[] = [
     rating: 5,
   },
 ];
+
+export const car_types: TCarTypes[] = [
+  {
+    type: "S",
+  },
+  {
+    type: "A",
+  },
+  {
+    type: "B",
+  },
+  {
+    type: "C",
+  },
+  {
+    type: "D",
+  },
+  {
+    type: "E",
+  },
+];

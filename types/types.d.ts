@@ -118,3 +118,7 @@ type TCarRatings = {
   id: number;
   rating: number;
 };
+
+type TCarTypes = {
+  type: string;
+};
