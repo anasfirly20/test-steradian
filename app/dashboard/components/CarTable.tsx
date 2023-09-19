@@ -1,4 +1,4 @@
-import { formatDate } from "@/helpers/utils/utils";
+// Next ui
 import {
   Table,
   TableHeader,
@@ -6,16 +6,23 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Tooltip,
-  useDisclosure,
 } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/tooltip";
+import { useDisclosure } from "@nextui-org/use-disclosure";
+
+// Components
 import ModalAddCar from "./ModalAddCar";
-import { Icon } from "@iconify/react/dist/iconify.js";
+
+// Api
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteCar, getCarById } from "@/api/routes/cars";
+
+// Miscellaneous
+import { Icon } from "@iconify/react/dist/iconify.js";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import ModalEditCar from "./ModalEditCar";
+import { formatDate } from "@/helpers/utils/utils";
 
 type TProps = {
   data: TGETCars[];

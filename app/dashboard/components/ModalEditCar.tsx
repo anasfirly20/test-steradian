@@ -1,5 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
-
+// Next ui
 import {
   Modal,
   ModalContent,
@@ -8,11 +7,18 @@ import {
   ModalFooter,
 } from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
-import CustomSelect from "@/app/components/CustomSelect";
-import { car_ratings } from "@/helpers/constants/constants";
 import { Input } from "@nextui-org/input";
+
+// Components
+import CustomSelect from "@/app/components/CustomSelect";
+
+// Api
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { putCar } from "@/api/routes/cars";
+
+// Miscellaneous
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { car_ratings } from "@/helpers/constants/constants";
 import toast from "react-hot-toast";
 
 type TProps = {
@@ -76,7 +82,7 @@ export default function ModalEditCar({ isOpen, onOpenChange, car }: TProps) {
 
   return (
     <>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>

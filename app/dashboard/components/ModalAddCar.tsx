@@ -1,23 +1,27 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
-
+// Next ui
 import {
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
-  useDisclosure,
-  Select,
-  SelectItem,
-} from "@nextui-org/react";
+} from "@nextui-org/modal";
+import { Button } from "@nextui-org/button";
+import { useDisclosure } from "@nextui-org/use-disclosure";
 import { Input } from "@nextui-org/react";
+
+// Api
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postCar } from "@/api/routes/cars";
+
+// Components
+import CustomSelect from "@/app/components/CustomSelect";
+
+// Miscellaneous
+import React, { ChangeEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { formValidator } from "@/helpers/utils/utils";
 import { car_ratings } from "@/helpers/constants/constants";
-import CustomSelect from "@/app/components/CustomSelect";
 
 const initialValues = {
   name: "",

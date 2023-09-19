@@ -3,11 +3,15 @@
 // Api
 import { useQuery } from "@tanstack/react-query";
 import { getAllUsers } from "@/api/routes/users";
-import { useSession } from "next-auth/react";
 import { getAllOrders } from "@/api/routes/orders";
-import OrderTable from "./components/OrderTable";
-import UserTable from "./components/UserTable";
 import { getAllCars } from "@/api/routes/cars";
+
+// Next auth
+import { useSession } from "next-auth/react";
+
+// Components
+import UserTable from "./components/UserTable";
+import OrderTable from "./components/OrderTable";
 import CarTable from "./components/CarTable";
 
 export default function UsersPage() {

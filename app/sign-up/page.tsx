@@ -4,11 +4,15 @@ import { ChangeEvent, useState } from "react";
 
 // Components
 import CustomInput from "../components/CustomInput";
+
+// Next ui
 import { Button } from "@nextui-org/react";
 
 // Api
 import { useMutation } from "@tanstack/react-query";
 import { PostUser } from "@/api/routes/users";
+
+// Miscellaneous
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 

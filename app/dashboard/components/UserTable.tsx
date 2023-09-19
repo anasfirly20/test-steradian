@@ -1,4 +1,4 @@
-import { formatDate } from "@/helpers/utils/utils";
+// Next ui
 import {
   Table,
   TableHeader,
@@ -6,7 +6,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from "@nextui-org/react";
+} from "@nextui-org/table";
 
 type TProps = {
   data: TGETUsers[];

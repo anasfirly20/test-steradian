@@ -1,8 +1,12 @@
+// Api
 import { deleteOrder, getOrderById } from "@/api/routes/orders";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+// Components
 import ModalEdit from "@/app/orders/components/ModalEdit";
 import OrderModal from "@/app/orders/components/OrderModal";
-import { formatDate } from "@/helpers/utils/utils";
-import { Icon } from "@iconify/react/dist/iconify.js";
+
+// Next ui
 import {
   Table,
   TableHeader,
@@ -10,12 +14,17 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  useDisclosure,
-  Tooltip,
-} from "@nextui-org/react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+} from "@nextui-org/table";
+import { useDisclosure } from "@nextui-org/use-disclosure";
+import { Tooltip } from "@nextui-org/tooltip";
+
+// Miscellaneous
+import { Icon } from "@iconify/react/dist/iconify.js";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { formatDate } from "@/helpers/utils/utils";
+
+// Miscellaneous
 
 type TProps = {
   data: TGETOrders[];
