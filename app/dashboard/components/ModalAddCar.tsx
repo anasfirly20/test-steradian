@@ -16,13 +16,13 @@ import { Input } from "@nextui-org/react";
 const initialValues = {
   name: "",
   carType: "",
-  rating: 0,
+  rating: "",
   fuel: "",
-  image: "",
+  image: null,
   hourRate: "",
   dayRate: "",
   monthRate: "",
-  orderId: 0,
+  orderId: null,
 };
 
 export default function ModalAddCar() {
@@ -30,11 +30,37 @@ export default function ModalAddCar() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [data, setData] = useState(initialValues);
+  const [selectedOrderId, setSelectedOrderId] = useState("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
+
+  const [value, setValue] = React.useState(new Set<string>([]));
+
+  const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setValue(new Set([e.target.value]));
+  };
+
+  const animals = [
+    {
+      value: 0,
+      label: "Dolphin",
+    },
+    {
+      value: 1,
+      label: "Chicken",
+    },
+    {
+      value: 2,
+      label: "Elephant",
+    },
+    {
+      value: 3,
+      label: "Bird",
+    },
+  ];
 
   return (
     <>
@@ -52,7 +78,7 @@ export default function ModalAddCar() {
                 <Input
                   variant="underlined"
                   label="Name"
-                  name="pickUpLoc"
+                  name="name"
                   value={data?.name}
                   onChange={handleChange}
                 />
@@ -99,15 +125,28 @@ export default function ModalAddCar() {
                   onChange={handleChange}
                 />
                 <Select
-                  color="default"
-                  label="Choose order id"
                   variant="underlined"
+                  label="Select Order Id"
+                  selectedKeys={value}
+                  className="max-w-xs"
+                  onChange={handleSelectionChange}
                 >
-                  <SelectItem>asd</SelectItem>
+                  {animals.map((animal) => (
+                    <SelectItem key={animal.value} value={animal.label}>
+                      {animal.label}
+                    </SelectItem>
+                  ))}
                 </Select>
+                <p className="text-small text-default-500">Selected: {value}</p>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onPress={onClose}>
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    console.log("data>>", data);
+                    // onClose()
+                  }}
+                >
                   Action
                 </Button>
               </ModalFooter>

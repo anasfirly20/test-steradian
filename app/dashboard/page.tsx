@@ -14,8 +14,6 @@ export default function UsersPage() {
   const { data: session } = useSession();
   const userId = session?.user?.id;
 
-  console.log("session>", session);
-
   // GET users
   const { data: dataUsers, isLoading: isLoadingUsers } = useQuery(
     ["usersData"],
