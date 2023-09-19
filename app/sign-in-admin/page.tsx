@@ -2,12 +2,12 @@
 
 import { ChangeEvent, useState } from "react";
 
-// Next ui
-import { Button } from "@nextui-org/button";
+// Next auth
 import { signIn } from "next-auth/react";
 
-// Components
-import CustomInput from "../components/CustomInput";
+// Next ui
+import { Button } from "@nextui-org/button";
+import { Input } from "@nextui-org/react";
 
 // Miscellaneous
 import { useRouter } from "next/navigation";
@@ -52,19 +52,21 @@ export default function SignInPage() {
         onSubmit={handleSubmit}
         className="grid mt-10 w-[30%] mx-auto gap-y-5"
       >
-        <CustomInput
+        <Input
           placeholder="Email"
           type="email"
           name="email"
           value={data?.email}
           onChange={(e) => handleChange(e)}
+          variant="underlined"
         />
-        <CustomInput
+        <Input
           placeholder="Password"
           type="password"
           name="password"
           value={data?.password}
           onChange={(e) => handleChange(e)}
+          variant="underlined"
         />
         <Button
           color="primary"
