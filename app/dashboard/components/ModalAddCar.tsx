@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
 import {
   Modal,
@@ -12,35 +12,44 @@ import {
   SelectItem,
 } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postCar } from "@/api/routes/cars";
+import toast from "react-hot-toast";
+import { formValidator } from "@/helpers/utils/utils";
 
 const initialValues = {
   name: "",
   carType: "",
-  rating: "",
+  rating: 0,
   fuel: "",
-  image: null,
+  image: "null",
   hourRate: "",
   dayRate: "",
   monthRate: "",
-  orderId: null,
+  orderId: 0,
 };
 
 export default function ModalAddCar() {
+  const queryClient = useQueryClient();
   // Modal Handler
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const [data, setData] = useState(initialValues);
-  const [selectedOrderId, setSelectedOrderId] = useState("");
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
-
   const [value, setValue] = React.useState(new Set<string>([]));
-
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue(new Set([e.target.value]));
+  };
+
+  const [data, setData] = useState(initialValues);
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    if (name === "rating") {
+      setData({ ...data, [name]: +value });
+    } else {
+      setData({ ...data, [name]: value });
+    }
   };
 
   const animals = [
@@ -61,6 +70,27 @@ export default function ModalAddCar() {
       label: "Bird",
     },
   ];
+
+  const newCarMutation = useMutation(postCar, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["carsData"]);
+      toast.success("New car has been added");
+      setData(initialValues);
+    },
+    onError: (err) => {
+      toast.error("An error occurred");
+      console.log(err);
+    },
+  });
+
+  const handleAdd = () => {
+    console.log("data sent -->", data);
+    newCarMutation.mutate(data);
+  };
+
+  useEffect(() => {
+    console.log("CHECK >>", data);
+  }, [data]);
 
   return (
     <>
@@ -93,7 +123,7 @@ export default function ModalAddCar() {
                   variant="underlined"
                   label="Rating"
                   name="rating"
-                  value={data?.rating}
+                  value={data?.rating.toString()}
                   onChange={handleChange}
                 />
                 <Input
@@ -125,14 +155,19 @@ export default function ModalAddCar() {
                   onChange={handleChange}
                 />
                 <Select
+                  name="orderId"
                   variant="underlined"
                   label="Select Order Id"
                   selectedKeys={value}
                   className="max-w-xs"
-                  onChange={handleSelectionChange}
+                  onChange={(e) => {
+                    handleSelectionChange(e);
+                    console.log(e.target.value);
+                    setData({ ...data, orderId: +e.target.value });
+                  }}
                 >
                   {animals.map((animal) => (
-                    <SelectItem key={animal.value} value={animal.label}>
+                    <SelectItem key={animal.value} value={animal.value}>
                       {animal.label}
                     </SelectItem>
                   ))}
@@ -143,8 +178,12 @@ export default function ModalAddCar() {
                 <Button
                   color="primary"
                   onPress={() => {
-                    console.log("data>>", data);
-                    // onClose()
+                    if (!formValidator(data)) {
+                      toast.error("All fields are mandatory");
+                      return;
+                    }
+                    handleAdd();
+                    onClose();
                   }}
                 >
                   Action
