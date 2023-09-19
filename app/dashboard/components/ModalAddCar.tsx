@@ -30,12 +30,13 @@ const initialValues = {
 };
 
 export default function ModalAddCar() {
-  const queryClient = useQueryClient();
   // Modal Handler
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const [data, setData] = useState(initialValues);
+  const queryClient = useQueryClient();
+  const cachedOrders = queryClient.getQueryData<TGETOrders[]>(["ordersData"]);
 
+  const [data, setData] = useState(initialValues);
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -46,25 +47,6 @@ export default function ModalAddCar() {
       setData({ ...data, [name]: value });
     }
   };
-
-  const animals = [
-    {
-      value: 0,
-      label: "Dolphin",
-    },
-    {
-      value: 1,
-      label: "Chicken",
-    },
-    {
-      value: 2,
-      label: "Elephant",
-    },
-    {
-      value: 3,
-      label: "Bird",
-    },
-  ];
 
   const newCarMutation = useMutation(postCar, {
     onSuccess: () => {
@@ -144,21 +126,19 @@ export default function ModalAddCar() {
                   value={data?.monthRate}
                   onChange={handleChange}
                 />
-                <Select
+                <select
                   name="orderId"
-                  variant="underlined"
-                  label="Select Order Id"
-                  className="max-w-xs"
+                  className="bg-transparent outline-none border-b-2 border-[#3f3f45] cursor-pointer"
                   onChange={(e) => {
                     setData({ ...data, orderId: +e.target.value });
                   }}
                 >
-                  {animals.map((animal) => (
-                    <SelectItem key={animal.value} value={animal.value}>
-                      {animal.label}
-                    </SelectItem>
+                  {cachedOrders?.map((order) => (
+                    <option key={order?.id} value={order?.id}>
+                      {order?.id}
+                    </option>
                   ))}
-                </Select>
+                </select>
               </ModalBody>
               <ModalFooter>
                 <Button
@@ -172,7 +152,7 @@ export default function ModalAddCar() {
                     onClose();
                   }}
                 >
-                  Action
+                  Add
                 </Button>
               </ModalFooter>
             </>

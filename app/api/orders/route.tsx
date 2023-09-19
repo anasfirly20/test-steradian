@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
       admin: true,
     },
     orderBy: {
-      pickUpDate: "asc",
+      id: "asc",
     },
   });
   return NextResponse.json(orders);
