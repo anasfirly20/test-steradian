@@ -34,11 +34,6 @@ export default function ModalAddCar() {
   // Modal Handler
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const [value, setValue] = React.useState(new Set<string>([]));
-  const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setValue(new Set([e.target.value]));
-  };
-
   const [data, setData] = useState(initialValues);
 
   const handleChange = (
@@ -82,11 +77,6 @@ export default function ModalAddCar() {
       console.log(err);
     },
   });
-
-  const handleAdd = () => {
-    console.log("data sent -->", data);
-    newCarMutation.mutate(data);
-  };
 
   useEffect(() => {
     console.log("CHECK >>", data);
@@ -158,11 +148,8 @@ export default function ModalAddCar() {
                   name="orderId"
                   variant="underlined"
                   label="Select Order Id"
-                  selectedKeys={value}
                   className="max-w-xs"
                   onChange={(e) => {
-                    handleSelectionChange(e);
-                    console.log(e.target.value);
                     setData({ ...data, orderId: +e.target.value });
                   }}
                 >
@@ -172,7 +159,6 @@ export default function ModalAddCar() {
                     </SelectItem>
                   ))}
                 </Select>
-                <p className="text-small text-default-500">Selected: {value}</p>
               </ModalBody>
               <ModalFooter>
                 <Button
@@ -182,7 +168,7 @@ export default function ModalAddCar() {
                       toast.error("All fields are mandatory");
                       return;
                     }
-                    handleAdd();
+                    newCarMutation.mutate(data);
                     onClose();
                   }}
                 >
