@@ -45,6 +45,18 @@ type TPOSTCar = {
   orderId: number;
 };
 
+type TPUTCar = {
+  name: string;
+  carType: string;
+  rating: number;
+  fuel: string;
+  image: string;
+  hourRate: string;
+  dayRate: string;
+  monthRate: string;
+  orderId: number;
+};
+
 // Order
 type TGETOrders = {
   id: number;

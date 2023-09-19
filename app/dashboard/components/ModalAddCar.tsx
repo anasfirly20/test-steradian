@@ -50,6 +50,7 @@ export default function ModalAddCar() {
     }
   };
 
+  // Add new car
   const newCarMutation = useMutation(postCar, {
     onSuccess: () => {
       queryClient.invalidateQueries(["carsData"]);
@@ -61,10 +62,6 @@ export default function ModalAddCar() {
       console.log(err);
     },
   });
-
-  useEffect(() => {
-    console.log("CHECK >>", data);
-  }, [data]);
 
   return (
     <>
