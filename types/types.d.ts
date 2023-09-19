@@ -86,3 +86,9 @@ type TPUTOrder = {
   pickUpDate: string;
   dropOffDate: string;
 };
+
+// Others
+type TCarRatings = {
+  id: number;
+  rating: number;
+};

@@ -16,6 +16,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postCar } from "@/api/routes/cars";
 import toast from "react-hot-toast";
 import { formValidator } from "@/helpers/utils/utils";
+import { car_ratings } from "@/helpers/constants/constants";
+import CustomSelect from "@/app/components/CustomSelect";
 
 const initialValues = {
   name: "",
@@ -93,13 +95,6 @@ export default function ModalAddCar() {
                 />
                 <Input
                   variant="underlined"
-                  label="Rating"
-                  name="rating"
-                  value={data?.rating.toString()}
-                  onChange={handleChange}
-                />
-                <Input
-                  variant="underlined"
                   label="Fuel"
                   name="fuel"
                   value={data?.fuel}
@@ -126,19 +121,20 @@ export default function ModalAddCar() {
                   value={data?.monthRate}
                   onChange={handleChange}
                 />
-                <select
-                  name="orderId"
-                  className="bg-transparent outline-none border-b-2 border-[#3f3f45] cursor-pointer"
+                <CustomSelect
+                  label="Rating"
+                  dataToMap={car_ratings}
+                  onChange={(e) => {
+                    setData({ ...data, rating: +e.target.value });
+                  }}
+                />
+                <CustomSelect
+                  label="Order Id"
+                  dataToMap={cachedOrders}
                   onChange={(e) => {
                     setData({ ...data, orderId: +e.target.value });
                   }}
-                >
-                  {cachedOrders?.map((order) => (
-                    <option key={order?.id} value={order?.id}>
-                      {order?.id}
-                    </option>
-                  ))}
-                </select>
+                />
               </ModalBody>
               <ModalFooter>
                 <Button
