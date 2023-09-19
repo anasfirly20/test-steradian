@@ -22,6 +22,7 @@ type TProps = {
 };
 
 const initialValues = {
+  id: 0,
   name: "",
   carType: "",
   rating: 0,
