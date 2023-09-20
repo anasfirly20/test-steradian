@@ -67,6 +67,10 @@ export default function ModalAddCar() {
     },
   });
 
+  // useEffect(() => {
+  //   console.log("DATA >>", data);
+  // }, [data]);
+
   return (
     <>
       <Button variant="ghost" onPress={onOpen} className="mb-3">
@@ -84,42 +88,42 @@ export default function ModalAddCar() {
                   variant="underlined"
                   label="Name"
                   name="name"
-                  value={data?.name}
+                  value={data?.name ?? ""}
                   onChange={handleChange}
                 />
                 <Input
                   variant="underlined"
                   label="Type"
                   name="carType"
-                  value={data?.carType}
+                  value={data?.carType ?? ""}
                   onChange={handleChange}
                 />
                 <Input
                   variant="underlined"
                   label="Fuel"
                   name="fuel"
-                  value={data?.fuel}
+                  value={data?.fuel ?? ""}
                   onChange={handleChange}
                 />
                 <Input
                   variant="underlined"
                   label="Hour Rate"
                   name="hourRate"
-                  value={data?.hourRate}
+                  value={data?.hourRate ?? ""}
                   onChange={handleChange}
                 />
                 <Input
                   variant="underlined"
                   label="Day Rate"
                   name="dayRate"
-                  value={data?.dayRate}
+                  value={data?.dayRate ?? ""}
                   onChange={handleChange}
                 />
                 <Input
                   variant="underlined"
                   label="Month Rate"
                   name="monthRate"
-                  value={data?.monthRate}
+                  value={data?.monthRate ?? ""}
                   onChange={handleChange}
                 />
                 <CustomSelect

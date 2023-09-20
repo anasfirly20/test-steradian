@@ -20,6 +20,7 @@ import { putCar } from "@/api/routes/cars";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { car_ratings } from "@/helpers/constants/constants";
 import toast from "react-hot-toast";
+import { formatNumber } from "@/helpers/utils/utils";
 
 type TProps = {
   isOpen: boolean;
@@ -56,10 +57,26 @@ export default function ModalEditCar({ isOpen, onOpenChange, car }: TProps) {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    if (name === "rating") {
+    const numberValues =
+      name === "rating" ||
+      name === "hourRate" ||
+      name === "dayRate" ||
+      name === "monthRate";
+
+    if (numberValues) {
       setData({ ...data, [name]: +value });
     } else {
       setData({ ...data, [name]: value });
+    }
+
+    if (data?.hourRate > data?.dayRate) {
+      // toast.error("Hour Rate must be lower than Day Rate");
+      console.log("Hour Rate must be lower than Day Rate");
+    } else {
+      if (data?.dayRate > data?.monthRate) {
+        // toast.error("Day Rate must be lower than Month Rate");
+        console.log("Day Rate must be lower than Month Rate");
+      }
     }
   };
 
@@ -80,6 +97,10 @@ export default function ModalEditCar({ isOpen, onOpenChange, car }: TProps) {
     }
   );
 
+  // useEffect(() => {
+  //   console.log("DATA >>", data);
+  // }, [data]);
+
   return (
     <>
       <Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -94,42 +115,42 @@ export default function ModalEditCar({ isOpen, onOpenChange, car }: TProps) {
                   variant="underlined"
                   label="Name"
                   name="name"
-                  value={data?.name}
+                  value={data?.name ?? ""}
                   onChange={handleChange}
                 />
                 <Input
                   variant="underlined"
                   label="Type"
                   name="carType"
-                  value={data?.carType}
+                  value={data?.carType ?? ""}
                   onChange={handleChange}
                 />
                 <Input
                   variant="underlined"
                   label="Fuel"
                   name="fuel"
-                  value={data?.fuel}
+                  value={data?.fuel ?? ""}
                   onChange={handleChange}
                 />
                 <Input
                   variant="underlined"
                   label="Hour Rate"
                   name="hourRate"
-                  value={data?.hourRate}
+                  value={data?.hourRate && formatNumber(+data?.hourRate)}
                   onChange={handleChange}
                 />
                 <Input
                   variant="underlined"
                   label="Day Rate"
                   name="dayRate"
-                  value={data?.dayRate}
+                  value={data?.dayRate && formatNumber(+data?.dayRate)}
                   onChange={handleChange}
                 />
                 <Input
                   variant="underlined"
                   label="Month Rate"
                   name="monthRate"
-                  value={data?.monthRate}
+                  value={data?.monthRate && formatNumber(+data?.monthRate)}
                   onChange={handleChange}
                 />
                 <CustomSelect
