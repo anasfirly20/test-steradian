@@ -18,6 +18,7 @@ import toast from "react-hot-toast";
 // Api
 import { putOrderById } from "@/api/routes/orders";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { formValidator, stringToNumeric } from "@/helpers/utils/utils";
 
 type TProps = {
   isOpen: boolean;
@@ -37,6 +38,7 @@ const initialValues = {
 export default function ModalEdit({ isOpen, onOpenChange, order }: TProps) {
   const queryClient = useQueryClient();
   const [data, setData] = useState(initialValues);
+  const [isInvalid, setIsInvalid] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -65,6 +67,18 @@ export default function ModalEdit({ isOpen, onOpenChange, order }: TProps) {
       },
     }
   );
+
+  // pickup/dropoff date checker
+  useEffect(() => {
+    const modPickUpDate = stringToNumeric(data?.pickUpDate);
+    const modDropOffDate = stringToNumeric(data?.dropOffDate);
+    if (modPickUpDate > modDropOffDate) {
+      setIsInvalid(true);
+      toast.error("Pick up date must not be LATER than drop off Date");
+    } else {
+      setIsInvalid(false);
+    }
+  }, [data?.dropOffDate, data?.pickUpDate]);
 
   return (
     <>
@@ -101,6 +115,7 @@ export default function ModalEdit({ isOpen, onOpenChange, order }: TProps) {
                   name="pickUpDate"
                   value={data?.pickUpDate ?? ""}
                   onChange={handleChange}
+                  isInvalid={isInvalid}
                 />
                 <InputLabel
                   label="Drop off date"
@@ -108,6 +123,7 @@ export default function ModalEdit({ isOpen, onOpenChange, order }: TProps) {
                   name="dropOffDate"
                   value={data?.dropOffDate ?? ""}
                   onChange={handleChange}
+                  isInvalid={isInvalid}
                 />
                 <InputLabel
                   label="Pick up time"
@@ -119,7 +135,9 @@ export default function ModalEdit({ isOpen, onOpenChange, order }: TProps) {
               </ModalBody>
               <ModalFooter>
                 <Button
+                  isDisabled={formValidator(data) && !isInvalid ? false : true}
                   color="primary"
+                  variant="solid"
                   onPress={() => {
                     editOrderMutation.mutate(data);
                     onClose();

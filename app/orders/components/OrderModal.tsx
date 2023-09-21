@@ -12,9 +12,9 @@ import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 
 // Miscellanepis
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { formValidator } from "@/helpers/utils/utils";
+import { formValidator, stringToNumeric } from "@/helpers/utils/utils";
 
 // Components
 import InputLabel from "@/app/components/InputLabel";
@@ -46,11 +46,24 @@ export default function OrderModal({
     userId: userId,
   };
   const [data, setData] = useState(initialValues);
+  const [isInvalid, setIsInvalid] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
+
+  // pickup/dropoff date checker
+  useEffect(() => {
+    const modPickUpDate = stringToNumeric(data?.pickUpDate);
+    const modDropOffDate = stringToNumeric(data?.dropOffDate);
+    if (modPickUpDate > modDropOffDate) {
+      setIsInvalid(true);
+      toast.error("Pick up date must not be LATER than drop off Date");
+    } else {
+      setIsInvalid(false);
+    }
+  }, [data?.dropOffDate, data?.pickUpDate]);
 
   const newOrderMutation = useMutation(postOrder, {
     onSuccess: () => {
@@ -65,9 +78,6 @@ export default function OrderModal({
   });
 
   const handleAdd = () => {
-    console.log("DATA >>", data);
-    console.log("userId >>", userId);
-
     if (!userId) {
       toast.error("You are not authenticated to do this operation");
     }
@@ -107,6 +117,7 @@ export default function OrderModal({
                   name="pickUpDate"
                   value={data?.pickUpDate}
                   onChange={handleChange}
+                  isInvalid={isInvalid}
                 />
                 <InputLabel
                   label="Drop off date"
@@ -114,6 +125,7 @@ export default function OrderModal({
                   name="dropOffDate"
                   value={data?.dropOffDate}
                   onChange={handleChange}
+                  isInvalid={isInvalid}
                 />
                 <InputLabel
                   label="Pick up time"
@@ -125,12 +137,11 @@ export default function OrderModal({
               </ModalBody>
               <ModalFooter>
                 <Button
+                  isDisabled={formValidator(data) && !isInvalid ? false : true}
                   color="primary"
                   variant="solid"
                   onPress={() => {
                     if (!formValidator(data)) {
-                      console.log("DATA >>", data);
-
                       toast.error("All fields are mandatory");
                       return;
                     }

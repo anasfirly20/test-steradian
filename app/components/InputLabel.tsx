@@ -8,6 +8,7 @@ type TProps = {
   name: string;
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  isInvalid?: boolean;
 };
 
 export default function InputLabel({
@@ -16,16 +17,20 @@ export default function InputLabel({
   name,
   value,
   onChange,
+  isInvalid,
 }: TProps) {
   return (
     <section className="grid">
-      <label className="text-sm ml-1">{label}</label>
+      <label className={`text-sm ml-1 ${isInvalid && "text-[#d51757]"}`}>
+        {label}
+      </label>
       <Input
         variant="underlined"
         type={type}
         name={name}
         value={value}
         onChange={onChange}
+        isInvalid={isInvalid}
       />
     </section>
   );

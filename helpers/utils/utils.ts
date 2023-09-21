@@ -33,3 +33,13 @@ export const formatNumber = (number: number) => {
     return formattedInteger;
   }
 };
+
+export function stringToNumeric(dateString: string) {
+  // Parse the date string into a Date object
+  const date = new Date(dateString);
+
+  // Get the numeric timestamp in milliseconds
+  const numericValue = date.getTime();
+
+  return numericValue;
+}
