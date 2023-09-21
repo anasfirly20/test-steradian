@@ -135,7 +135,7 @@ export default function ModalEdit({ isOpen, onOpenChange, order }: TProps) {
               </ModalBody>
               <ModalFooter>
                 <Button
-                  isDisabled={formValidator(data) && !isInvalid ? false : true}
+                  isDisabled={!isInvalid ? false : true}
                   color="primary"
                   variant="solid"
                   onPress={() => {

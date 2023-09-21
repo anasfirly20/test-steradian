@@ -47,7 +47,12 @@ export default function ModalAddCar() {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    if (name === "rating") {
+    if (
+      name === "rating" ||
+      name === "hourRate" ||
+      name === "dayRate" ||
+      name === "monthRate"
+    ) {
       setData({ ...data, [name]: +value });
     } else {
       setData({ ...data, [name]: value });
@@ -67,9 +72,26 @@ export default function ModalAddCar() {
     },
   });
 
-  // useEffect(() => {
-  //   console.log("DATA >>", data);
-  // }, [data]);
+  const [invalidFirst, setInvalidFirst] = useState(false);
+  const [invalidSecond, setInvalidSecond] = useState(false);
+  useEffect(() => {
+    if (data?.hourRate > data?.dayRate) {
+      toast.error("Hour rate cannot be higher than day rate");
+      setInvalidFirst(true);
+    } else {
+      setInvalidFirst(false);
+    }
+    if (data?.dayRate > data?.monthRate) {
+      setInvalidSecond(true);
+      toast.error("Day rate cannot be higher than month rate");
+    } else {
+      setInvalidSecond(false);
+    }
+  }, [data?.hourRate, data?.dayRate, data?.monthRate]);
+
+  useEffect(() => {
+    console.log("DATA >>", data);
+  }, [data]);
 
   return (
     <>
@@ -110,20 +132,25 @@ export default function ModalAddCar() {
                   label="Hour Rate"
                   name="hourRate"
                   value={data?.hourRate ?? ""}
+                  type="number"
                   onChange={handleChange}
+                  isInvalid={invalidFirst}
                 />
                 <Input
                   variant="underlined"
                   label="Day Rate"
                   name="dayRate"
                   value={data?.dayRate ?? ""}
+                  type="number"
                   onChange={handleChange}
+                  isInvalid={invalidSecond}
                 />
                 <Input
                   variant="underlined"
                   label="Month Rate"
                   name="monthRate"
                   value={data?.monthRate ?? ""}
+                  type="number"
                   onChange={handleChange}
                 />
                 <CustomSelect
@@ -152,6 +179,11 @@ export default function ModalAddCar() {
                     newCarMutation.mutate(data);
                     onClose();
                   }}
+                  isDisabled={
+                    !invalidFirst && !invalidSecond && !formValidator(data)
+                      ? true
+                      : false
+                  }
                 >
                   Add
                 </Button>

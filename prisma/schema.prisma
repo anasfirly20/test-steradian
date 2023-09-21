@@ -44,9 +44,9 @@ model Car {
   rating    Int
   fuel      String
   image     String
-  hourRate  String
-  dayRate   String
-  monthRate String
+  hourRate  Int
+  dayRate   Int
+  monthRate Int
   order     Order  @relation(fields: [orderId], references: [id])
   orderId   Int
 }
